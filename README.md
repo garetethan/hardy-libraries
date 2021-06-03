@@ -27,4 +27,4 @@ Install the script and then put any of below snippets as per need.
         //do whatever with detail variable.
     });
     
-    ```
+```
