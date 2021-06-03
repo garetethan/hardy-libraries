@@ -5,7 +5,7 @@
 ## Network Listener
 **Sample Use of Listeners**
 
-Install the script and then put any of below snippets as per need.
+Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/network%20listener.js) and then put any of below snippets in your own code/Userscripts as per need.
 
 ```javascript
 
