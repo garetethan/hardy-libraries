@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Network Call Listener
 // @namespace    hardy.network.monitor
-// @version      0.1
+// @version      0.2
 // @description  Monitor Fetch, XHR and websocket calls
 // @author       Hardy [2131687]
 // @match        *://*/*
@@ -22,6 +22,7 @@
             this.url = arguments[1];
             this.addEventListener('load', function() {
                 let detail = {};
+                detail.callType = "xhr";
                 detail.url = this.url;
                 detail.body = this.requestBody;
                 detail.response = this.responseText;
@@ -44,8 +45,11 @@
             let returned = await original_fetch(url, init)
             let copy = returned.clone();
             let detail = {};
+            detail.callType = "fetch";
             try {
-                copy.json().then((data) => {
+                let response = await copy.text();
+                if (isJsonString(response)) {
+                    let data = JSON.parse(response);
                     detail.response = data;
                     detail.url = url;
                     detail.body = {};
@@ -57,10 +61,8 @@
                         } catch(error) {}
                     }
                     window.dispatchEvent(new CustomEvent("hardy-fetch", {"detail": detail}));
-                });
-            } catch (error) {
-                copy.text().then(data=> {
-                    detail.response = data;
+                } else {
+                    detail.response = response;
                     detail.url = url;
                     detail.body = {};
                     if (init.body) {
@@ -71,8 +73,9 @@
                         } catch(error) {}
                     }
                     window.dispatchEvent(new CustomEvent("hardy-fetch", {"detail": detail}));
-                });
-            }
+                }
+            } catch (error) {}
+
             return returned;
         }
     }
@@ -84,6 +87,7 @@
             const socket = new nativeWebSocket(...args);
             socket.addEventListener("message", (t)=> {
                 let detail = {};
+                detail.callType = "websocket";
                 detail.url = socket.url;
                 detail.response = t.data;
                 window.dispatchEvent(new CustomEvent("hardy-socket", {
@@ -92,6 +96,16 @@
             });
             return socket;
         }
+    }
+    function isJsonString(str) {
+        if (!str || str === "") return false;
+
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
     addXHRListener();
     addFetchListener();
