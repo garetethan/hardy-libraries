@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Network Call Listener
 // @namespace    hardy.network.monitor
-// @version      0.2
+// @version      0.3
 // @description  Monitor Fetch, XHR and websocket calls
 // @author       Hardy [2131687]
 // @match        *://*/*
@@ -11,9 +11,9 @@
 
 (function() {
     'use strict';
-    var xhrListener = false;
-    var fetchListener = false;
-    var websocketListener = false;
+    let xhrListener = false;
+    let fetchListener = false;
+    let websocketListener = false;
     function addXHRListener() {
         if (xhrListener === true) return;
         const origOpen = XMLHttpRequest.prototype.open;
@@ -25,7 +25,11 @@
                 detail.callType = "xhr";
                 detail.url = this.url;
                 detail.body = this.requestBody;
-                detail.response = this.responseText;
+                if (this.responseType === "" || this.responseType === "text") {
+                    detail.response = this.responseText;
+                } else {
+                    detail.response = this.response;
+                }
                 //whatever the response was
                 window.dispatchEvent(new CustomEvent("hardy-xhr", { detail }));
             });
