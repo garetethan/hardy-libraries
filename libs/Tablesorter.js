@@ -1,4 +1,4 @@
-function getNumber(inp) {
+function parseText(inp) {
 	if (typeof inp === "string") {
 		let stripped = inp.replace(/[$,]/g, "").replace("\s", '').replace(/\./g, "");
 		let float = parseFloat(stripped);
@@ -8,7 +8,6 @@ function getNumber(inp) {
 	}
 	return inp;
 }
-
 function sortTable(table, col, key, ord) {
 	let trList = table.querySelectorAll("tr");
 	let index = 0;
@@ -19,12 +18,12 @@ function sortTable(table, col, key, ord) {
 			let relevantTd = tdList[col];
 			if (!isNaN(parseInt(key)) && parseInt(key) == col) {
 				let text = relevantTd.innerText;
-				array.push([index, getNumber(text)]);
+				array.push([index, parseText(text)]);
 			} else if (key.startsWith("attr=")) {
 				let attrKey = key.split("attr=")[1];
 				let attr = relevantTd.getAttribute(attrKey);
 				if (attr) {
-					array.push([index, getNumber(attr)]);
+					array.push([index, parseText(attr)]);
 				} else {
 					console.log("Table Sorter: Key argument does not equate to a valid attribute!");
 					return;
