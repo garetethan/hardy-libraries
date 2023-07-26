@@ -1,6 +1,9 @@
 function parseText(inp) {
 	if (typeof inp === "string") {
-		let stripped = inp.replace(/[$,]/g, "").replace("\s", '').replace(/\./g, "");
+		let stripped = inp.replace(/[$,]/g, "").replace("\s", '');
+		if (stripped.at(-1) === ".") {
+			stripped = stripped.replace(/\./g, "");
+		}
 		let float = parseFloat(stripped);
 		if (!isNaN(float)) {
 			return float;
