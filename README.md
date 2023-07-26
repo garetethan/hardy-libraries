@@ -35,7 +35,7 @@ Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/
 ## Table Sort
 **The purpose of this is to sort a simple table while not removing any listeners, which is why instead of innerHTML, I used appendChild and insertBefore methods as they retain the listeners.**
 
-[Link](https://github.com/sid-the-sloth1/libraries/blob/main/libs/sorters.js#L12)
+[Link](https://github.com/sid-the-sloth1/libraries/blob/main/libs/Tablesorter.js#L14)
 
 ```javascript
 sortTable(tableNode, column_which_has_the_key, key, sort_order);
