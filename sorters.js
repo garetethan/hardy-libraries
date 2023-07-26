@@ -22,7 +22,13 @@ function sortTable(table, col, key, ord) {
 				array.push([index, getNumber(text)]);
 			} else if (key.startsWith("attr=")) {
 				let attrKey = key.split("attr=")[1];
-				array.push([index, getNumber(relevantTd.getAttribute(attrKey))]);
+				let attr = relevantTd.getAttribute(attrKey);
+				if (attr) {
+					array.push([index, getNumber(attr)]);
+				} else {
+					console.log("Table Sorter: Key argument does not equate to a valid attribute!");
+					return;
+				}
 			} else {
 				console.log("Table Sorter: Key argument is not valid!");
 				return;
