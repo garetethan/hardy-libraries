@@ -42,7 +42,7 @@ sortTable(tableNode, column_which_has_the_key, key, sort_order);
 ```
 **tableNode**: The table (not the selector, but the element itself) which has to be sorted. (Type: Node)
 
-**column_which_has_the_key**: The column with respect to which the table is to be sorted. (Type: Integer)
+**column_which_has_the_key**: The column with respect to which the table is to be sorted. (Type: Integer, starts from 0)
 
 **key**: This seperate argument is needed in case the sorting does not have to be done as per the value in cells, but an html attribute of the cell, eg:
 ```html
