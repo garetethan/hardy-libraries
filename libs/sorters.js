@@ -1,6 +1,6 @@
 function getNumber(inp) {
 	if (typeof inp === "string") {
-		let stripped = inp.replace(/[$,]/g, "").replace("\s", '');
+		let stripped = inp.replace(/[$,]/g, "").replace("\s", '').replace(/\./g, "");
 		let float = parseFloat(stripped);
 		if (!isNaN(float)) {
 			return float;
