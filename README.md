@@ -2,6 +2,7 @@
 ## Index
 - [Network Listeners](#network-listener)
 - [Table Sorter](#table-sort)
+- [Wait For Element To Exist](#wait-for-element-to-exist)
 
 ## Network Listener
 **Sample Use of Listeners**
@@ -32,6 +33,8 @@ Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/
     });
     
 ```
+
+
 ## Table Sort
 **The purpose of this is to sort a simple table while not removing any listeners, which is why instead of innerHTML, I used appendChild and insertBefore methods as they retain the listeners.**
 
@@ -57,10 +60,18 @@ sortTable(tableNode, column_which_has_the_key, key, sort_order);
    <td>999</td>
 </tr>
 
-
-
 In this case the key argument will be a string: "attr=name_id"
 Otherwise the key argument will be an integer which shall be equal to column_which_has_the_key
 ```
 
 **sort_order**: "asc" or "dec" (Type: String)
+
+
+## Wait For Element To Exist
+
+[Link](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement.js)
+```js
+waitForElement('.labelMain').then((element) => {
+    console.log('Element is ready: ', element.textContent);
+});
+```
