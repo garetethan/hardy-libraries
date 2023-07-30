@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+   <head></head>
+   <body>
+      <div id="parent">
+         <div id="initial">Already Present</div>
+      </div>
+   </body>
+   <script>
+      let div = document.querySelector("#parent");
+      setTimeout(() => {
+      	div.innerHTML += `<a href="https://www.ilovecats.com">Link</a>`;
+      }, 2000)
+      setTimeout(() => {
+      	div.innerHTML += `<label>blah blah</label> `;
+      }, 4000)
+      setTimeout(() => {
+      	div.innerHTML += `<input type="text" value="I love cats!">`;
+      }, 8000)
+      function waitForElement(selector) {
+      	return new Promise(resolve => {
+      		function tempFunc() {
+      			let element = document.querySelector(selector);
+      			if (element) {
+      				return resolve(element);
+      			} else {
+      				setTimeout(tempFunc, 1000);
+      			}
+      		}
+      		tempFunc();
+      	});
+      }
+      waitForElement('a').then((elem) => {
+      	console.log('Element is ready: ', elem.href);
+      });
+      waitForElement('label').then((elem) => {
+      	console.log('Element is ready: ', elem.textContent);
+      });
+      waitForElement('input').then((elem) => {
+      	console.log('Element is ready: ', elem.value);
+      });
+   </script>
+</html>
