@@ -71,7 +71,11 @@ Otherwise the key argument will be an integer which shall be equal to column_whi
 
 [Link](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement.js)
 ```js
-waitForElement('.labelMain').then((element) => {
-    console.log('Element is ready: ', element.textContent);
+waitForElement(`#priceper`, 700, 15, "bsvdhdsl").then((element) => {
+    element.setAttribute("min", "0");
+    AutoNumeric.getAutoNumericElement(element).options.minimumValue('0');
+    addMarketBox(element);
+}).catch(error => {
+    console.log(error);
 });
 ```
