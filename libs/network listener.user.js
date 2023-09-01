@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name         Network Call Listener
+// @name         Custom Event Dispatchers
 // @namespace    hardy.network.monitor
-// @version      0.3
-// @description  Monitor Fetch, XHR and websocket calls
+// @version      0.5
+// @description  Monitor Fetch, XHR and websocket calls and if document is ready for injecting scripts
 // @author       Hardy [2131687]
 // @match        *://*/*
-// @grant        none
 // @run-at       document-start
+// @grant        unsafeWindow
 // ==/UserScript==
 
 (function() {
@@ -14,6 +14,8 @@
     let xhrListener = false;
     let fetchListener = false;
     let websocketListener = false;
+
+    let documentListener;
     function addXHRListener() {
         if (xhrListener === true) return;
         const origOpen = XMLHttpRequest.prototype.open;
@@ -44,50 +46,31 @@
     function addFetchListener() {
         if (fetchListener === true) return;
         fetchListener = true;
-        let original_fetch = window.fetch;
-        window.fetch = async (url, init) => {
-            let returned = await original_fetch(url, init)
-            let copy = returned.clone();
-            let detail = {};
-            detail.callType = "fetch";
-            try {
-                let response = await copy.text();
-                if (isJsonString(response)) {
-                    let data = JSON.parse(response);
-                    detail.response = data;
-                    detail.url = url;
-                    detail.body = {};
-                    if (init.body) {
-                        try {
-                            for (const key of init.body.keys()) {
-                                detail.body[key] = init.body.get(key);
-                            }
-                        } catch(error) {}
-                    }
-                    window.dispatchEvent(new CustomEvent("hardy-fetch", {"detail": detail}));
-                } else {
-                    detail.response = response;
-                    detail.url = url;
-                    detail.body = {};
-                    if (init.body) {
-                        try {
-                            for (const key of init.body.keys()) {
-                                detail.body[key] = init.body.get(key);
-                            }
-                        } catch(error) {}
-                    }
-                    window.dispatchEvent(new CustomEvent("hardy-fetch", {"detail": detail}));
-                }
-            } catch (error) {}
 
-            return returned;
-        }
+        let original_fetch = unsafeWindow.fetch;
+        unsafeWindow.fetch = async (url, init) => {
+            let response = await original_fetch(url, init)
+            let respo = response.clone();
+            try {
+                respo.text().then((info) => {
+                    const details = {"fetch" : {"url": url}};
+                    details.body = init.body? init.body: '';
+                    details.json = isJsonString(info)? JSON.parse(info): {"data": info};
+                    window.dispatchEvent(new CustomEvent("hardy-fetch", {
+                        "detail": details
+                    }));
+                });
+            } catch(error) {
+                console.log(`Fetch Interceptor Error: ${error}`);
+            }
+            return response;
+        };
     }
     function addWebsocketListener() {
         if (websocketListener === true) return;
         websocketListener = true;
-        const nativeWebSocket = window.WebSocket;
-        window.WebSocket = function(...args) {
+        const nativeWebSocket = unsafeWindow.WebSocket;
+        unsafeWindow.WebSocket = function(...args) {
             const socket = new nativeWebSocket(...args);
             socket.addEventListener("message", (t)=> {
                 let detail = {};
@@ -100,6 +83,16 @@
             });
             return socket;
         }
+    }
+    function addDocumentListener() {
+        //made to deal with error while applying querySelector when document is null
+        documentListener = setInterval(()=> {
+            if (document.head) {
+                window.dispatchEvent(new CustomEvent("hardy-documentAvailable", {
+                }));
+                clearInterval(documentListener);
+            }
+        }, 400);
     }
     function isJsonString(str) {
         if (!str || str === "") return false;
@@ -114,5 +107,5 @@
     addXHRListener();
     addFetchListener();
     addWebsocketListener();
-
+    addDocumentListener();
 })();
