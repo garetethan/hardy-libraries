@@ -71,10 +71,16 @@ Otherwise the key argument will be an integer which shall be equal to column_whi
 
 [Link](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement.js)
 ```js
-waitForElement(`#priceper`, 700, 15, "bsvdhdsl").then((element) => {
-    element.setAttribute("min", "0");
-    AutoNumeric.getAutoNumericElement(element).options.minimumValue('0');
-    addMarketBox(element);
+ waitForPageLoad().then(() => {
+     cacheInventoryItems();
+ });
+waitForElement(`form[action^="/Bank/Deposit"]`).then((element) => {
+    const parent = element.parentNode.parentNode;
+    const deposit_input = element.querySelector("input");
+    showTaxRateOnBank(parent, deposit_input);
+    deposit_input.addEventListener('input', function(event) {
+        showTaxRateOnBank(parent, event.target);
+    });
 }).catch(error => {
     console.log(error);
 });
