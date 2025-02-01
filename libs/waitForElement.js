@@ -1,41 +1,38 @@
-let head = false;
-let headTimer = setInterval(() => {
-    if (document.head) {
-        head = true;
-        clearInterval(headTimer);
-    }
-}, 300);
-let waitObj = {};
-
-function waitForElement(selector, duration, maxTries, identifier, allOrOne = 0) {
-    return new Promise(function(resolve, reject) {
-        const value = Math.floor(Math.random() * 1000000000);
-        waitObj[identifier] = value;
-        let attempts = 0;
-        const intervalId = setInterval(() => {
-            if (attempts > maxTries) {
-                clearInterval(intervalId);
-                reject(`Selector Listener Expired: ${selector}, Reason: Dead bcoz u didnt cum on time!!!!`);
-            } else if (waitObj[identifier] !== value) {
-                clearInterval(intervalId);
-                reject(`Selector Listener Expired: ${selector}, Reason: Dead coz u didnt luv me enough and got another SeLecTor!!!!`);
-            }
-            if (head) {
-                if (allOrOne === 0) {
-                    const element = document.querySelector(selector);
-                    if (element) {
-                        clearInterval(intervalId);
-                        resolve(element);
-                    }
-                } else if (allOrOne === 1) {
-                    const element = document.querySelectorAll(selector);
-                    if (element.length > 0) {
-                        clearInterval(intervalId);
-                        resolve(element);
-                    }
+ function ensureDocumentAccessible() {
+        return new Promise((resolve) => {
+            const checkHead = setInterval(() => {
+                if (document && document.head) {
+                    clearInterval(checkHead);
+                    resolve();
                 }
+            }, 50);
+        });
+    }
+
+    async function waitForElement(selector, duration = 800, maxTries = 20, multiple = false) {
+        await ensureDocumentAccessible(); // Ensure document is ready
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const intervalId = setInterval(() => {
+                const elements = multiple ? document.querySelectorAll(selector) : document.querySelector(selector);
+                if ((multiple && elements.length > 0) || (!multiple && elements)) {
+                    clearInterval(intervalId);
+                    resolve(elements);
+                } else if (++attempts > maxTries) {
+                    clearInterval(intervalId);
+                    reject(`Timeout: Unable to find element(s) for selector "${selector}" after ${maxTries} tries.`);
+                }
+            }, duration);
+        });
+    }
+
+    async function waitForPageLoad() {
+        await ensureDocumentAccessible(); // Ensure document is ready
+        return new Promise((resolve) => {
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                resolve();
+            } else {
+                document.addEventListener("DOMContentLoaded", resolve, { once: true });
             }
-            attempts += 1;
-        }, duration);
-    });
-}
+        });
+    }
