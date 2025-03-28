@@ -50,7 +50,7 @@ window.addEventListener("hardy-socket", (t) => {
 
 ## Sourtable
 
-**A lightweight JavaScript library for sorting HTML tables without removing event listeners.**
+**A lightweight and simple JavaScript library for sorting HTML tables without removing event listeners.**
 
 Sourtable.js ensures event listeners remain intact by using `appendChild` and `insertBefore` instead of modifying `innerHTML`.
 
@@ -101,7 +101,8 @@ sourtable.initiate();
 
 #### `addCustomParseFunction(colIndex, parseFunction)`
 
-Allows specifying a custom parsing function for a column before sorting.
+- Allows specifying a custom parsing function for a column before sorting. Sourtable has an inbuilt function to parse the text, but if it does not correctly the parse the text in your case, you can use a custom function to parse text in a particular row.
+- For example, if your column contains percentage values in brackets `(49.8)%`, Sourtable might not correctly parse and sort it, you can use a custom function to parse the text to extract `49.8` from the text and turn it into a float, so that the table can be correctly sorted.
 
 **Parameters:**
 
@@ -112,7 +113,8 @@ Allows specifying a custom parsing function for a column before sorting.
 
 ```javascript
 sourtable.addCustomParseFunction(1, function (text) {
-  return SourtableFunctions.parseText(text);
+	const num_only = text.trim().replace(/[()%]/g, '');
+	return parseFloat(num_only);
 });
 ```
 
