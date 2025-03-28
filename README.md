@@ -11,9 +11,6 @@
     - [Methods](#methods)
       - [`initiate()`](#initiate)
       - [`addCustomParseFunction(colIndex, parseFunction)`](#addcustomparsefunctioncolindex-parsefunction)
-  - [Internal Utility Functions](#internal-utility-functions)
-    - [`SourtableFunctions.createElement(nodeType, attributes)`](#sourtablefunctionscreateelementnodetype-attributes)
-    - [`SourtableFunctions.parseText(text)`](#sourtablefunctionsparsetexttext)
   - [Sorting Behavior](#sorting-behavior)
   - [Notes](#notes)
   - [Example Usage](#example-usage)
@@ -114,23 +111,6 @@ sourtable.addCustomParseFunction(1, function(text) {
 });
 ```
 
-### Internal Utility Functions
-
-#### `SourtableFunctions.createElement(nodeType, attributes)`
-Creates an HTML element with specified attributes.
-
-**Example:**
-```javascript
-const div = SourtableFunctions.createElement("div", {class: "container"});
-```
-
-#### `SourtableFunctions.parseText(text)`
-Parses a text string, removing special characters and converting it to a number if possible.
-
-**Example:**
-```javascript
-const parsedValue = SourtableFunctions.parseText("$1,234.56"); // Returns 1234.56
-```
 
 ### Sorting Behavior
 
