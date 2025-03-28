@@ -1,7 +1,7 @@
-const SourtableFunctions = {
+const SourTableFunctions = {
     "createElement": function (nodeType, attributes = {}) {
         if (typeof nodeType !== "string") {
-            console.error("SourtableFunctions.createElement: Invalid nodeType provided.");
+            console.error("SourTableFunctions.createElement: Invalid nodeType provided.");
             return null;
         }
         try {
@@ -11,7 +11,7 @@ const SourtableFunctions = {
             }
             return element;
         } catch (error) {
-            console.error("SourtableFunctions.createElement: Failed to create element.", error);
+            console.error("SourTableFunctions.createElement: Failed to create element.", error);
             return null;
         }
     },
@@ -24,13 +24,13 @@ const SourtableFunctions = {
             let float = parseFloat(stripped);
             return isNaN(float) ? text : float;
         } catch (error) {
-            console.error("SourtableFunctions.parseText: Error parsing text.", error);
+            console.error("SourTableFunctions.parseText: Error parsing text.", error);
             return text;
         }
     }
 };
 
-class Sourtable {
+class SourTable {
     // table = table element. Not selector, but the element itself.
     // excludedColumns = array of column indexes to exclude from sorting. Index starts at 0.
     // keysForAttributes = object of key-value pairs. Key is the column index, value is the attribute key to sort by. for example, if you want to sort by the "data-last_active" attribute in column 2, then the key,value pair would be would be {"col_2": "data_last_active"}
@@ -38,13 +38,13 @@ class Sourtable {
     // dynamic = whether you expect the table to add or remove elements after being initialised or not.
     constructor(table, excludedColumns = [], keysForAttributes = {}) {
         if (!(table instanceof HTMLElement)) {
-            throw new Error("Sourtable: Invalid table element provided.");
+            throw new Error("SourTable: Invalid table element provided.");
         }
         if (!Array.isArray(excludedColumns) || !excludedColumns.every(Number.isInteger)) {
-            throw new Error("Sourtable: excludedColumns must be an array of integers.");
+            throw new Error("SourTable: excludedColumns must be an array of integers.");
         }
         if (typeof keysForAttributes !== "object" || keysForAttributes === null) {
-            throw new Error("Sourtable: keysForAttributes must be a valid object.");
+            throw new Error("SourTable: keysForAttributes must be a valid object.");
         }
 
         this.table = table;
@@ -75,7 +75,7 @@ class Sourtable {
                 if (!arrowsDiv) {
                     th.classList.add(`sourtable-header`);
                     th.setAttribute("data-sourtable-col-index", `index_${index}`);
-                    arrowsDiv = SourtableFunctions.createElement("div", { "class": "sourtable-arrow-container" });
+                    arrowsDiv = SourTableFunctions.createElement("div", { "class": "sourtable-arrow-container" });
                     th.appendChild(arrowsDiv);
                 }
                 arrowsDiv.innerHTML = `<div class="sourtable-arrow-up"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path  d="M18.2 13.3L12 7l-6.2 6.3c-.2.2-.3.5-.3.7s.1.5.3.7s.4.3.7.3h11c.3 0 .5-.1.7-.3s.3-.5.3-.7s-.1-.5-.3-.7"/></svg></div><div class="sourtable-arrow-down"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path  d="M5.8 9.7L12 16l6.2-6.3c.2-.2.3-.5.3-.7s-.1-.5-.3-.7s-.4-.3-.7-.3h-11c-.3 0-.5.1-.7.3s-.3.4-.3.7s.1.5.3.7"/></svg></div>`;
@@ -123,7 +123,7 @@ class Sourtable {
             const tdList = row.querySelectorAll("td");
             const relevantTd = tdList[colIndex];
 
-            let parseFunction = SourtableFunctions.parseText;
+            let parseFunction = SourTableFunctions.parseText;
             if (this.customParseFunctions[`col_${colIndex}`]) {
                 parseFunction = this.customParseFunctions[`col_${colIndex}`];
             }
@@ -132,7 +132,7 @@ class Sourtable {
                 if (attrVal) {
                     array.push([index, parseFunction(attrVal)]);
                 } else {
-                    throw new Error(`Sourtable: Key argument does not equate to a valid attribute! ATTRIBUTE_KEY: ${keyAttr}, ROW_INDEX: ${index}`);
+                    throw new Error(`SourTable: Key argument does not equate to a valid attribute! ATTRIBUTE_KEY: ${keyAttr}, ROW_INDEX: ${index}`);
                     return;
                 }
             } else {
@@ -176,7 +176,7 @@ class Sourtable {
     }
     addCSS() {
         if (!document.querySelector("style#sourtable-style")) {
-            const style = SourtableFunctions.createElement("style", { id: "sourtable-style" });
+            const style = SourTableFunctions.createElement("style", { id: "sourtable-style" });
             style.innerHTML = `.sourtable-arrow-container{display:inline-flex;flex-direction:column;margin-left:.3em;vertical-align:middle;height:1em;width:.8em;justify-content:space-between}.sourtable-arrow-down,.sourtable-arrow-up{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.sourtable-arrow-down svg,.sourtable-arrow-up svg{width:100%;height:100%;fill:currentColor;opacity:.3;max-height:.5em}.sourtable-arrow-down.filled svg,.sourtable-arrow-up.filled svg{opacity:1!important}.sourtable-header{cursor:pointer!important}`;
             document.head.appendChild(style);
         }

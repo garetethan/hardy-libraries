@@ -3,7 +3,7 @@
 ## Table of Contents
 - [Network Listener](#network-listener)
   - [Sample Use of Listeners](#sample-use-of-listeners)
-- [Sourtable](#sourtable)
+- [SourTable](#sourtable)
   - [Usage](#usage)
     - [Initializing a Sortable Table](#initializing-a-sortable-table)
     - [Constructor Parameters](#constructor-parameters)
@@ -48,11 +48,11 @@ window.addEventListener("hardy-socket", (t) => {
 });
 ```
 
-## Sourtable
+## SourTable
 
 **A lightweight and simple JavaScript library for sorting HTML tables without removing event listeners.**
 
-Sourtable.js ensures event listeners remain intact by using `appendChild` and `insertBefore` instead of modifying `innerHTML`.
+SourTable.js ensures event listeners remain intact by using `appendChild` and `insertBefore` instead of modifying `innerHTML`.
 
 [Link to the JS File](https://github.com/sid-the-sloth1/libraries/blob/main/libs/SourTable.js)
 
@@ -60,12 +60,12 @@ Sourtable.js ensures event listeners remain intact by using `appendChild` and `i
 
 #### Initializing a Sortable Table
 
-To make a table sortable, initialize the `Sourtable` class with the table element:
+To make a table sortable, initialize the `SourTable` class with the table element:
 
 ```javascript
 window.addEventListener("load", () => {
   const table = document.getElementById("myTable");
-  const sourTable = new Sourtable(table);
+  const sourTable = new SourTable(table);
   sourTable.initiate();
 });
 ```
@@ -73,7 +73,7 @@ window.addEventListener("load", () => {
 #### Constructor Parameters
 
 ```javascript
-new Sourtable(table, (excludedColumns = []), (keysForAttributes = {}));
+new SourTable(table, (excludedColumns = []), (keysForAttributes = {}));
 ```
 
 - `table` _(HTMLElement)_: The table element to be made sortable.
@@ -89,7 +89,7 @@ new Sourtable(table, (excludedColumns = []), (keysForAttributes = {}));
 	<td>USA</td>
 </tr>
 <tr>
-	<td>Bob</td>
+	<td>Bob</td>s
 	<td>30</td>
 	<td data-salary="60000">$60,000</td>
 	<td>Canada</td>
@@ -97,7 +97,7 @@ new Sourtable(table, (excludedColumns = []), (keysForAttributes = {}));
 ```
 
 ```javascript
-const sourtable = new Sourtable(table, [1], { "col_2": "data-salary" });
+const sourtable = new SourTable(table, [1], { "col_2": "data-salary" });
 sourtable.initiate();
 ```
 
@@ -115,8 +115,8 @@ sourtable.initiate();
 
 #### `addCustomParseFunction(colIndex, parseFunction)`
 
-- Allows specifying a custom parsing function for a column before sorting. Sourtable has an inbuilt function to parse the text, but if it does not correctly the parse the text in your case, you can use a custom function to parse text in a particular row.
-- For example, if your column contains percentage values in brackets `(49.8)%`, Sourtable might not correctly parse and sort it, you can use a custom function to parse the text to extract `49.8` from the text and turn it into a float, so that the table can be correctly sorted.
+- Allows specifying a custom parsing function for a column before sorting. SourTable has an inbuilt function to parse the text, but if it does not correctly the parse the text in your case, you can use a custom function to parse text in a particular row.
+- For example, if your column contains percentage values in brackets `(49.8)%`, SourTable might not correctly parse and sort it, you can use a custom function to parse the text to extract `49.8` from the text and turn it into a float, so that the table can be correctly sorted.
 
 **Parameters:**
 
@@ -140,7 +140,7 @@ Removes the "click" event listeners and sorting indicators from the table. You w
 
 ```javascript
 window.addEventListener("load", () => {
-  let table = new Sourtable(document.getElementById("myTable")); // use let. If you use const you will get an error if you try to set it to null later on.
+  let table = new SourTable(document.getElementById("myTable")); // use let. If you use const you will get an error if you try to set it to null later on.
   table.initiate();
   document.getElementById("disengage").addEventListener("click", () => {
       table.disengage();
@@ -163,7 +163,7 @@ Clicking a column header toggles between ascending (`asc`) and descending (`desc
 
 ```javascript
 const table = document.querySelector("#myTable");
-const sourtable = new Sourtable(table, [0], { "col_2": "data-salary" });
+const sourtable = new SourTable(table, [0], { "col_2": "data-salary" });
 sourtable.addCustomParseFunction(1, (text) =>
   parseFloat(text.replace("%", ""))
 );
