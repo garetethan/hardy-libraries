@@ -118,7 +118,7 @@ class Sourtable {
         const array = [];
         let rows = this.getBody();
         const row_len = rows.length;
-        const length = this.table.querySelectorAll("tbody tr.sourtable-row").length;
+        const length = this.table.querySelectorAll("tr.sourtable-row").length;
         //console.log(row_len, length);
         if (row_len !== length) {
             this.addIndicesToRows();
