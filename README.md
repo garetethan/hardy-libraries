@@ -115,12 +115,12 @@ sourtable.initiate();
 
 #### `addCustomParseFunction(colIndex, parseFunction)`
 
-- Allows specifying a custom parsing function for a column before sorting. SourTable has an inbuilt function to parse the text, but if it does not correctly the parse the text in your case, you can use a custom function to parse text in a particular row.
-- For example, if your column contains percentage values in brackets `(49.8)%`, SourTable might not correctly parse and sort it, you can use a custom function to parse the text to extract `49.8` from the text and turn it into a float, so that the table can be correctly sorted.
+- This method lets you define a custom function to process column values before sorting. SourTable has a built-in parser, but if it doesn't correctly handle your data, you can override it for specific columns.
+- For example, if a column contains percentage values in brackets like `(49.8)%`, SourTable may not extract the number correctly. You can provide a custom function to convert it into a float `49.8`, ensuring accurate sorting.
 
 **Parameters:**
 
-- `colIndex` _(Number)_: The index of the column to apply the function to.
+- `colIndex` _(Number)_: The index of the column to apply the function to. (Index starts from 0)
 - `parseFunction` _(Function)_: A function that takes a string input and returns a sortable value.
 
 **Example:**
