@@ -1,49 +1,62 @@
-# libraries
-## Index
-- [Network Listeners](#network-listener)
-- [Sourtable: Table Sorter](#sourtable)
+# Libraries
+
+## Table of Contents
+- [Network Listener](#network-listener)
+  - [Sample Use of Listeners](#sample-use-of-listeners)
+- [Sourtable](#sourtable)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Initializing a Sortable Table](#initializing-a-sortable-table)
+    - [Constructor Parameters](#constructor-parameters)
+    - [Methods](#methods)
+      - [`initiate()`](#initiate)
+      - [`addCustomParseFunction(colIndex, parseFunction)`](#addcustomparsefunctioncolindex-parsefunction)
+  - [Internal Utility Functions](#internal-utility-functions)
+    - [`SourtableFunctions.createElement(nodeType, attributes)`](#sourtablefunctionscreateelementnodetype-attributes)
+    - [`SourtableFunctions.parseText(text)`](#sourtablefunctionsparsetexttext)
+  - [Sorting Behavior](#sorting-behavior)
+  - [Notes](#notes)
+  - [Example Usage](#example-usage)
 - [Wait For Element To Exist](#wait-for-element-to-exist)
 
 ## Network Listener
-**Sample Use of Listeners**
 
-Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/network%20listener.js) and then put any of below snippets in your own code/Userscripts as per need.
+### Sample Use of Listeners
+
+Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/network%20listener.js) and then use any of the following snippets in your own code or Userscripts as needed.
 
 ```javascript
+// Fetch Interceptor
+window.addEventListener("hardy-fetch", (t) => {
+    let detail = t.detail;
+    console.log(detail);
+    // Do whatever with the detail variable.
+});
 
-//Fetch Interceptor
-    window.addEventListener("hardy-fetch", (t) => {
-        let detail = t.detail;
-        console.log(detail);
-        //do whatever with detail variable.
-    });
+// XHR Interceptor
+window.addEventListener("hardy-xhr", (t) => {
+    let detail = t.detail;
+    console.log(detail);
+    // Do whatever with the detail variable.
+});
 
-    //XHR Intercept
-    window.addEventListener("hardy-xhr", (t) => {
-        let detail = t.detail;
-        console.log(detail);
-        //do whatever with detail variable.
-    });
-
-    //socket Intercept
-    window.addEventListener("hardy-socket", (t) => {
-        let detail = t.detail;
-        console.log(detail);
-        //do whatever with detail variable.
-    });
-    
+// Socket Interceptor
+window.addEventListener("hardy-socket", (t) => {
+    let detail = t.detail;
+    console.log(detail);
+    // Do whatever with the detail variable.
+});
 ```
 
-
 ## Sourtable
-**The purpose of this is to sort a simple table while not removing any listeners, which is why instead of innerHTML, I used appendChild and insertBefore methods as they retain the listeners.**
 
+**A lightweight JavaScript library for sorting HTML tables without removing event listeners.**
 
-Sourtable.js is a lightweight JavaScript library that adds sorting to HTML tables. It allows users to exclude specific columns from sorting, sort by attributes value of a "td" cell element , and define custom parsing functions for text.
+Sourtable.js ensures event listeners remain intact by using `appendChild` and `insertBefore` instead of modifying `innerHTML`.
 
 ### Installation
 
-To use Sourtable.js, include the script in your project, preferably before the closing `<body>` tag for optimal performance:
+Include the script in your project, preferably before the closing `<body>` tag for optimal performance:
 
 ```html
 <script src="path/to/sourtable.js"></script>
@@ -81,7 +94,7 @@ This will exclude column 1 from sorting and sort column 2 using the `data-last_a
 ### Methods
 
 #### `initiate()`
-Initializes the sorting functionality, adding event listeners and sorting indicators (up/down arrows next to column headers).
+Initializes sorting functionality, adding event listeners and sorting indicators (up/down arrows next to column headers).
 
 ```javascript
 sourtable.initiate();
@@ -92,7 +105,7 @@ Allows specifying a custom parsing function for a column before sorting.
 
 **Parameters:**
 - `colIndex` *(Number)*: The index of the column to apply the function to.
-- `parseFunction` *(Function)*: The function that takes a string input and returns a sortable value.
+- `parseFunction` *(Function)*: A function that takes a string input and returns a sortable value.
 
 **Example:**
 ```javascript
@@ -138,16 +151,15 @@ sourtable.initiate();
 ```
 This example excludes column 0 from sorting, sorts column 2 by `data-last_active`, and parses percentages in column 1.
 
-
-
-
 ## Wait For Element To Exist
 
-[Link](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement.js)
-```js
- waitForPageLoad().then(() => {
-     cacheInventoryItems();
- });
+[View Script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement.js)
+
+```javascript
+waitForPageLoad().then(() => {
+    cacheInventoryItems();
+});
+
 waitForElement(`form[action^="/Bank/Deposit"]`).then((element) => {
     const parent = element.parentNode.parentNode;
     const deposit_input = element.querySelector("input");
@@ -159,3 +171,4 @@ waitForElement(`form[action^="/Bank/Deposit"]`).then((element) => {
     console.log(error);
 });
 ```
+
