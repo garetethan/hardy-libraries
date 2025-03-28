@@ -157,7 +157,7 @@ window.addEventListener("load", () => {
 The `sort` method allows you to programmatically sort a table column based on text content or a specified attribute.
 
  **Parameters**  
-- `colIndex` *(Number)*: The index of the column to be sorted (starting from 0).  
+- `colIndex` *(Number)*: The index of the column to be sorted (starting from 0). However make sure that the index is not excluded from sorting during initialization.
 - `order` *(String)*: The sorting order. Can be either `"asc"` for ascending or `"desc"` for descending order.  
 - `key` *(String, Optional)*: If sorting based on an attribute, specify it using `"attr=ATTRIBUTE_NAME"`. Leave empty to sort by the cell's text.
 
@@ -167,9 +167,9 @@ Sorting column 1 in ascending order:
 sourtable.sort(1, "asc");
 ```
 
-Sorting column 2 using the `data-last_active` attribute in descending order:  
+Sorting column 2 using the `data-salary` attribute in descending order:  
 ```javascript
-sourtable.sort(2, "desc", "attr=data-last_active");
+sourtable.sort(2, "desc", "attr=data-salary");
 ```
 
  **Behavior**  
