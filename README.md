@@ -54,6 +54,8 @@ window.addEventListener("hardy-socket", (t) => {
 
 Sourtable.js ensures event listeners remain intact by using `appendChild` and `insertBefore` instead of modifying `innerHTML`.
 
+[Link to the JS File](https://github.com/sid-the-sloth1/libraries/blob/main/libs/SourTable.js)
+
 ### Usage
 
 #### Initializing a Sortable Table
