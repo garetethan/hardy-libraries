@@ -10,6 +10,8 @@
   - [Methods](#methods)
     - [`initiate()`](#initiate)
     - [`addCustomParseFunction(colIndex,-parseFunction)`](#addcustomparsefunctioncolindex-parsefunction)
+    - [`disengage()`](#disengage)
+    - [`sort(colIndex, order, key = "")`](#sortcolindex-order-key--)
   - [Sorting Behavior](#sorting-behavior)
   - [Notes](#notes)
   - [Example Usage](#example-usage)
@@ -148,6 +150,34 @@ window.addEventListener("load", () => {
     });
 });
 ```
+#### `sort(colIndex, order, key = "")`
+
+The `sort` method allows you to programmatically sort a table column based on text content or a specified attribute.
+
+ **Parameters**  
+- `colIndex` *(Number)*: The index of the column to be sorted (starting from 0).  
+- `order` *(String)*: The sorting order. Can be either `"asc"` for ascending or `"desc"` for descending order.  
+- `key` *(String, Optional)*: If sorting based on an attribute, specify it using `"attr=ATTRIBUTE_NAME"`. Leave empty to sort by the cell's text.
+
+ **Usage Example**  
+Sorting column 1 in ascending order:  
+```javascript
+sourtable.sort(1, "asc");
+```
+
+Sorting column 2 using the `data-last_active` attribute in descending order:  
+```javascript
+sourtable.sort(2, "desc", "attr=data-last_active");
+```
+
+ **Behavior**  
+- If a `key` is provided, the sorting is based on the attribute value of each cell in that column.  
+- If no `key` is provided, the method sorts based on the visible text content.  
+- If a custom parsing function has been defined for the column, it is applied before sorting.  
+- Sorting follows numeric comparison for numbers and lexicographic order for strings.  
+
+This method can be useful for manually triggering sorting after modifying the table content.
+
 
 ### Sorting Behavior
 

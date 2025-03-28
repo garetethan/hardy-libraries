@@ -1,35 +1,3 @@
-const SourTableFunctions = {
-    "createElement": function (nodeType, attributes = {}) {
-        if (typeof nodeType !== "string") {
-            console.error("SourTableFunctions.createElement: Invalid nodeType provided.");
-            return null;
-        }
-        try {
-            const element = document.createElement(nodeType);
-            for (const [key, value] of Object.entries(attributes)) {
-                element.setAttribute(key, value);
-            }
-            return element;
-        } catch (error) {
-            console.error("SourTableFunctions.createElement: Failed to create element.", error);
-            return null;
-        }
-    },
-    "parseText": function (text) {
-        if (typeof text !== "string") return text;
-
-        try {
-            let stripped = text.replace(/[$,£]/g, "").replace(/\s/g, '');
-            if (stripped.at(-1) === ".") stripped = stripped.slice(0, -1);
-            let float = parseFloat(stripped);
-            return isNaN(float) ? text : float;
-        } catch (error) {
-            console.error("SourTableFunctions.parseText: Error parsing text.", error);
-            return text;
-        }
-    }
-};
-
 class SourTable {
     // table = table element. Not selector, but the element itself.
     // excludedColumns = array of column indexes to exclude from sorting. Index starts at 0.
@@ -75,7 +43,7 @@ class SourTable {
                 if (!arrowsDiv) {
                     th.classList.add(`sourtable-header`);
                     th.setAttribute("data-sourtable-col-index", `index_${index}`);
-                    arrowsDiv = SourTableFunctions.createElement("div", { "class": "sourtable-arrow-container" });
+                    arrowsDiv = this.createElement("div", { "class": "sourtable-arrow-container" });
                     th.appendChild(arrowsDiv);
                 }
                 arrowsDiv.innerHTML = `<div class="sourtable-arrow-up"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path  d="M18.2 13.3L12 7l-6.2 6.3c-.2.2-.3.5-.3.7s.1.5.3.7s.4.3.7.3h11c.3 0 .5-.1.7-.3s.3-.5.3-.7s-.1-.5-.3-.7"/></svg></div><div class="sourtable-arrow-down"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path  d="M5.8 9.7L12 16l6.2-6.3c.2-.2.3-.5.3-.7s-.1-.5-.3-.7s-.4-.3-.7-.3h-11c-.3 0-.5.1-.7.3s-.3.4-.3.7s.1.5.3.7"/></svg></div>`;
@@ -123,21 +91,29 @@ class SourTable {
             const tdList = row.querySelectorAll("td");
             const relevantTd = tdList[colIndex];
 
-            let parseFunction = SourTableFunctions.parseText;
-            if (this.customParseFunctions[`col_${colIndex}`]) {
-                parseFunction = this.customParseFunctions[`col_${colIndex}`];
-            }
             if (isKeyAttr) {
                 const attrVal = relevantTd.getAttribute(keyAttr);
                 if (attrVal) {
-                    array.push([index, parseFunction(attrVal)]);
+                    let parsed;
+                    if (this.customParseFunctions[`col_${colIndex}`]) {
+                        parsed = this.customParseFunctions[`col_${colIndex}`](attrVal);
+                    } else {
+                        parsed = this.parseText(attrVal);
+                    }
+                    array.push([index, parsed]);
                 } else {
                     throw new Error(`SourTable: Key argument does not equate to a valid attribute! ATTRIBUTE_KEY: ${keyAttr}, ROW_INDEX: ${index}`);
                     return;
                 }
             } else {
                 const text = relevantTd.innerText;
-                array.push([index, parseFunction(text)]);
+                let parsed;
+                    if (this.customParseFunctions[`col_${colIndex}`]) {
+                        parsed = this.customParseFunctions[`col_${colIndex}`](text);
+                    } else {
+                        parsed = this.parseText(text);
+                    }
+                array.push([index, parsed]);
             }
             rowIndex += 1;
         }
@@ -176,7 +152,7 @@ class SourTable {
     }
     addCSS() {
         if (!document.querySelector("style#sourtable-style")) {
-            const style = SourTableFunctions.createElement("style", { id: "sourtable-style" });
+            const style = this.createElement("style", { id: "sourtable-style" });
             style.innerHTML = `.sourtable-arrow-container{display:inline-flex;flex-direction:column;margin-left:.3em;vertical-align:middle;height:1em;width:.8em;justify-content:space-between}.sourtable-arrow-down,.sourtable-arrow-up{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.sourtable-arrow-down svg,.sourtable-arrow-up svg{width:100%;height:100%;fill:currentColor;opacity:.3;max-height:.5em}.sourtable-arrow-down.filled svg,.sourtable-arrow-up.filled svg{opacity:1!important}.sourtable-header{cursor:pointer!important}`;
             document.head.appendChild(style);
         }
@@ -200,5 +176,22 @@ class SourTable {
             }
         });
     }
-
+    createElement(nodeType, attributes = {}) {
+        const element = document.createElement(nodeType);
+        for (const [key, value] of Object.entries(attributes)) {
+            element.setAttribute(key, value);
+        }
+        return element;
+    }
+    parseText(text) {
+        try {
+            let stripped = text.replace(/[$,£]/g, "").replace(/\s/g, '');
+            if (stripped.at(-1) === ".") stripped = stripped.slice(0, -1);
+            let float = parseFloat(stripped);
+            return isNaN(float) ? text : float;
+        } catch (error) {
+            console.error("SourTableFunctions.parseText: Error parsing text.", error);
+            return text;
+        }
+    }
 }
