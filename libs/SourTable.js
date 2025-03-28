@@ -36,7 +36,7 @@ class Sourtable {
     // keysForAttributes = object of key-value pairs. Key is the column index, value is the attribute key to sort by. for example, if you want to sort by the "data-last_active" attribute in column 2, then the key,value pair would be would be {"col_2": "data_last_active"}
     // more examples: {"col_2": "data_last_active", "col_3": "data_outofhosp_in"}
     // dynamic = whether you expect the table to add or remove elements after being initialised or not.
-    constructor(table, excludedColumns = [], keysForAttributes={}) {
+    constructor(table, excludedColumns = [], keysForAttributes = {}) {
         if (!(table instanceof HTMLElement)) {
             throw new Error("Sourtable: Invalid table element provided.");
         }
@@ -46,7 +46,7 @@ class Sourtable {
         if (typeof keysForAttributes !== "object" || keysForAttributes === null) {
             throw new Error("Sourtable: keysForAttributes must be a valid object.");
         }
-        
+
         this.table = table;
         this.excludedColumns = excludedColumns;
         this.keysForAttributes = keysForAttributes;
@@ -58,15 +58,19 @@ class Sourtable {
     }
 
     getBody() {
-        let firstRow = this.table.querySelector("tr"); // Get the first row (header)
-        if (firstRow && firstRow.nextElementSibling) {
-            let rows = [];
-            let row = firstRow.nextElementSibling;
-            while (row) {
-                rows.push(row);
-                row = row.nextElementSibling;
+        if (!this.table.querySelector("thead")) {
+            let firstRow = this.table.querySelector("tr"); // Get the first row (header)
+            if (firstRow && firstRow.nextElementSibling) {
+                let rows = [];
+                let row = firstRow.nextElementSibling;
+                while (row) {
+                    rows.push(row);
+                    row = row.nextElementSibling;
+                }
+                return rows;
             }
-            return rows;
+        } else {
+            return this.table.querySelectorAll("tbody tr");
         }
         return [];
     }
@@ -122,7 +126,6 @@ class Sourtable {
         const array = [];
         const rows = this.getBody();
         ///
-
         const isKeyAttr = typeof key === 'string' && key !== '' && key.startsWith('attr=');
         let keyAttr = "";
         if (isKeyAttr) {
@@ -186,12 +189,21 @@ class Sourtable {
         }
 
     }
+    addCSS() {
+        if (!document.querySelector("style#sourtable-style")) {
+            const style = SourtableFunctions.createElement("style", { id: "sourtable-style" });
+            style.innerHTML = `.sourtable-arrow-container{display:inline-flex;flex-direction:column;margin-left:.3em;vertical-align:middle;height:1em;width:.8em;justify-content:space-between}.sourtable-arrow-down,.sourtable-arrow-up{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.sourtable-arrow-down svg,.sourtable-arrow-up svg{width:100%;height:100%;fill:currentColor;opacity:.3;max-height:.5em}.sourtable-arrow-down.filled svg,.sourtable-arrow-up.filled svg{opacity:1!important}.sourtable-header{cursor:pointer!important}`;
+            document.head.appendChild(style);
+        }
+    }
     initiate() {
         this.resetIndicatorArrows();
         this.addIndicesToRows();
         this.addListeners();
+        this.addCSS();
     }
     addCustomParseFunction(colIndex, parseFunction) {
         this.customParseFunctions[`col_${colIndex}`] = parseFunction;
     }
+
 }
