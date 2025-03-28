@@ -23,7 +23,7 @@
 
 ### Sample Use of Listeners
 
-Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/network%20listener.js) and then use any of the following snippets in your own code or Userscripts as needed.
+Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/network%20listener.js) and then use any of the following snippets in your own code or Userscripts as needed. It takes away the need of monkeypatching in all your tools again and again to read the network calls.
 
 ```javascript
 // Fetch Interceptor
