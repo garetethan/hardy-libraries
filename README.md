@@ -81,13 +81,27 @@ new Sourtable(table, (excludedColumns = []), (keysForAttributes = {}));
 - `keysForAttributes` _(Object)_: An object where keys are column indexes (as `col_index`) and values are attribute names to sort by.
 
 **Example:**
+```html
+<tr>
+	<td>Alice</td>
+	<td>25</td>
+	<td data-salary="50000">$50,000</td>
+	<td>USA</td>
+</tr>
+<tr>
+	<td>Bob</td>
+	<td>30</td>
+	<td data-salary="60000">$60,000</td>
+	<td>Canada</td>
+</tr>
+```
 
 ```javascript
-const sourtable = new Sourtable(table, [1], { col_2: "data-last_active" });
+const sourtable = new Sourtable(table, [1], { col_2: "data-salary" });
 sourtable.initiate();
 ```
 
-This will exclude column 1 from sorting and sort column 2 using the `data-last_active` attribute.
+This will exclude column 1 from sorting and sort column 2 using the `data-salary` attribute instead of innerText of the cells.
 
 ### Methods
 
