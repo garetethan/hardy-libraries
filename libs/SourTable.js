@@ -178,7 +178,7 @@ class Sourtable {
         }
 
         const indexOfLast = array[array.length - 1][0];
-        const tbody = this.table.querySelector("tbody");
+        const tbody = this.table.querySelector("tbody") || this.table;
         const last_element = tbody.querySelector(`tr[data-sourtable-row-index="${indexOfLast}"]`);
         tbody.appendChild(last_element);
         array.splice(-1);
