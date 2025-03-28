@@ -1,21 +1,23 @@
 # Libraries
 
 ## Table of Contents
-
 - [Network Listener](#network-listener)
   - [Sample Use of Listeners](#sample-use-of-listeners)
 - [Sourtable](#sourtable)
-  - [Installation](#installation)
   - [Usage](#usage)
     - [Initializing a Sortable Table](#initializing-a-sortable-table)
     - [Constructor Parameters](#constructor-parameters)
-    - [Methods](#methods)
-      - [`initiate()`](#initiate)
-      - [`addCustomParseFunction(colIndex, parseFunction)`](#addcustomparsefunctioncolindex-parsefunction)
+  - [Methods](#methods)
+    - [`initiate()`](#initiate)
+    - [`addCustomParseFunction(colIndex,-parseFunction)`](#addcustomparsefunctioncolindex-parsefunction)
   - [Sorting Behavior](#sorting-behavior)
   - [Notes](#notes)
   - [Example Usage](#example-usage)
 - [Wait For Element To Exist](#wait-for-element-to-exist)
+  - [Features](#features)
+  - [Usage](#usage-1)
+    - [`waitForElement(selector,-duration-=-800,-maxTries-=-20,-multiple-=-false)`](#waitforelementselector-duration--800-maxtries--20-multiple--false)
+    - [`waitForPageLoad()`](#waitforpageload)
 
 ## Network Listener
 
@@ -62,7 +64,7 @@ To make a table sortable, initialize the `Sourtable` class with the table elemen
 window.addEventListener("load", () => {
   const table = document.getElementById("myTable");
   const sourTable = new Sourtable(table);
-  sourTFable.initiate();
+  sourTable.initiate();
 });
 ```
 
@@ -139,21 +141,51 @@ This example excludes column 0 from sorting, sorts column 2 by `data-last_active
 
 [View Script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement.js)
 
+## Features
+- **`waitForElement`**: Waits for an element to appear in the DOM before resolving.
+- **`waitForPageLoad`**: Ensures the page is fully loaded (simulates `@run_at: document-start`) before proceeding.
+
+## Usage
+
+### `waitForElement(selector, duration = 800, maxTries = 20, multiple = false)`
+Waits for an element to be available in the DOM before resolving.
+
+#### Parameters:
+- `selector` (string) - The CSS selector of the element to wait for.
+- `duration` (number, optional) - Interval time in milliseconds between each check (default: `800ms`).
+- `maxTries` (number, optional) - Maximum number of attempts before timing out (default: `20`).
+- `multiple` (boolean, optional) - If `true`, waits for multiple elements and returns a NodeList (default: `false`).
+
+#### Returns:
+A `Promise` that resolves when the element(s) appear or rejects if the element is not found within the limit.
+
+#### Example Usage:
+
+##### Wait for a button and click it:
+```javascript
+waitForElement('button#submit-btn')
+    .then(button => button.click())
+    .catch(error => console.error('Button not found:', error));
+```
+
+##### Wait for a dynamically loaded image and update its source:
+```javascript
+waitForElement('img#dynamic-image')
+    .then(image => image.src = 'https://example.com/new-image.jpg')
+    .catch(error => console.error('Image not found:', error));
+```
+
+### `waitForPageLoad()`
+Ensures the document is fully loaded before executing further scripts.
+
+#### Returns:
+A `Promise` that resolves when the document is ready.
+
+#### Example:
+##### Log a message when the page loads:
 ```javascript
 waitForPageLoad().then(() => {
-  cacheInventoryItems();
+	console.log('Page has fully loaded.');
 });
-
-waitForElement(`form[action^="/Bank/Deposit"]`)
-  .then((element) => {
-    const parent = element.parentNode.parentNode;
-    const deposit_input = element.querySelector("input");
-    showTaxRateOnBank(parent, deposit_input);
-    deposit_input.addEventListener("input", function (event) {
-      showTaxRateOnBank(parent, event.target);
-    });
-  })
-  .catch((error) => {
-    console.log(error);
-  });
 ```
+
