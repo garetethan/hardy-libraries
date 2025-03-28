@@ -27,7 +27,7 @@
     }
 
     async function waitForPageLoad() {
-        await ensureDocumentAccessible(); // Ensure document is ready
+        await ensureDocumentAccessible();
         return new Promise((resolve) => {
             if (document.readyState === "complete" || document.readyState === "interactive") {
                 resolve();
