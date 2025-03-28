@@ -174,6 +174,12 @@ waitForElement('img#dynamic-image')
     .then(image => image.src = 'https://example.com/new-image.jpg')
     .catch(error => console.error('Image not found:', error));
 ```
+#### Wait for multiple elements(**document.querySelectorAll**) and log the elements of returned NodeList
+```javascript
+waitForElement('ul#item-list li', 500, 30, true)
+    .then(items => items.forEach(item => console.log('Item:', item.textContent)))
+    .catch(error => console.error('Items not found:', error));
+```
 
 ### `waitForPageLoad()`
 Ensures the document is fully loaded before executing further scripts.
