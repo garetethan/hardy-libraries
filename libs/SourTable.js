@@ -58,21 +58,12 @@ class Sourtable {
     }
 
     getBody() {
-        if (!this.table.querySelector("thead")) {
-            let firstRow = this.table.querySelector("tr"); // Get the first row (header)
-            if (firstRow && firstRow.nextElementSibling) {
-                let rows = [];
-                let row = firstRow.nextElementSibling;
-                while (row) {
-                    rows.push(row);
-                    row = row.nextElementSibling;
-                }
-                return rows;
-            }
+        if (this.table.querySelector("thead")) {
+            return Array.from(this.table.querySelectorAll("tbody tr"));
         } else {
-            return this.table.querySelectorAll("tbody tr");
+            let rows = this.table.querySelectorAll("tr");
+            return rows.length > 1 ? Array.from(rows).slice(1) : [];
         }
-        return [];
     }
     resetIndicatorArrows() {
         const headerRow = this.getHeader();
@@ -96,6 +87,7 @@ class Sourtable {
         const rows = this.getBody();
         for (let index = 0; index < rows.length; index++) {
             const row = rows[index];
+            row.classList.add("sourtable-row");
             row.setAttribute("data-sourtable-row-index", `index_${index}`);
         }
     }
@@ -124,7 +116,14 @@ class Sourtable {
     }
     sort(colIndex, order, key = "") {
         const array = [];
-        const rows = this.getBody();
+        let rows = this.getBody();
+        const row_len = rows.length;
+        const length = this.table.querySelectorAll("tbody tr.sourtable-row").length;
+        //console.log(row_len, length);
+        if (row_len !== length) {
+            this.addIndicesToRows();
+            rows = this.getBody();
+        }
         ///
         const isKeyAttr = typeof key === 'string' && key !== '' && key.startsWith('attr=');
         let keyAttr = "";
