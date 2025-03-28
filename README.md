@@ -97,7 +97,7 @@ new Sourtable(table, (excludedColumns = []), (keysForAttributes = {}));
 ```
 
 ```javascript
-const sourtable = new Sourtable(table, [1], { col_2: "data-salary" });
+const sourtable = new Sourtable(table, [1], { "col_2": "data-salary" });
 sourtable.initiate();
 ```
 
@@ -146,14 +146,14 @@ Clicking a column header toggles between ascending (`asc`) and descending (`desc
 
 ```javascript
 const table = document.querySelector("#myTable");
-const sourtable = new Sourtable(table, [0], { col_2: "data-last_active" });
+const sourtable = new Sourtable(table, [0], { "col_2": "data-salary" });
 sourtable.addCustomParseFunction(1, (text) =>
   parseFloat(text.replace("%", ""))
 );
 sourtable.initiate();
 ```
 
-This example excludes column 0 from sorting, sorts column 2 by `data-last_active`, and parses percentages in column 1.
+This example excludes column 0 from sorting, sorts column 2 by `data-salary`, and parses percentages in column 1.
 
 ## Wait For Element To Exist
 
