@@ -51,13 +51,6 @@ window.addEventListener("hardy-socket", (t) => {
 
 Sourtable.js ensures event listeners remain intact by using `appendChild` and `insertBefore` instead of modifying `innerHTML`.
 
-### Installation
-
-Include the script in your project, preferably before the closing `<body>` tag for optimal performance:
-
-```html
-<script src="path/to/sourtable.js"></script>
-```
 
 ### Usage
 
