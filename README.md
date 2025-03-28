@@ -165,7 +165,7 @@ Clicking a column header toggles between ascending (`asc`) and descending (`desc
 const table = document.querySelector("#myTable");
 const sourtable = new SourTable(table, [0], { "col_2": "data-salary" });
 sourtable.addCustomParseFunction(1, (text) =>
-  parseFloat(text.replace("%", ""))
+  return parseFloat(text.replace("%", ""))
 );
 sourtable.initiate();
 ```
