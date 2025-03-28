@@ -1,6 +1,7 @@
 # Libraries
 
 ## Table of Contents
+
 - [Network Listener](#network-listener)
   - [Sample Use of Listeners](#sample-use-of-listeners)
 - [SourTable](#sourtable)
@@ -9,7 +10,7 @@
     - [Constructor Parameters](#constructor-parameters)
   - [Methods](#methods)
     - [`initiate()`](#initiate)
-    - [`addCustomParseFunction(colIndex,-parseFunction)`](#addcustomparsefunctioncolindex-parsefunction)
+    - [`addCustomParseFunction(colIndex, parseFunction)`](#addcustomparsefunctioncolindex-parsefunction)
     - [`disengage()`](#disengage)
     - [`sort(colIndex, order, key = "")`](#sortcolindex-order-key--)
   - [Sorting Behavior](#sorting-behavior)
@@ -18,8 +19,9 @@
 - [Wait For Element To Exist](#wait-for-element-to-exist)
   - [Features](#features)
   - [Usage](#usage-1)
-    - [`waitForElement(selector,-duration-=-800,-maxTries-=-20,-multiple-=-false)`](#waitforelementselector-duration--800-maxtries--20-multiple--false)
+    - [`waitForElement(selector, duration = 800, maxTries = 20, multiple = false)`](#waitforelementselector-duration--800-maxtries--20-multiple--false)
     - [`waitForPageLoad()`](#waitforpageload)
+
 
 ## Network Listener
 
