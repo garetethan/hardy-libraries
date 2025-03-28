@@ -83,14 +83,6 @@ class Sourtable {
             }
         }
     }
-    addIndicesToRows() {
-        const rows = this.getBody();
-        for (let index = 0; index < rows.length; index++) {
-            const row = rows[index];
-            row.classList.add("sourtable-row");
-            row.setAttribute("data-sourtable-row-index", `index_${index}`);
-        }
-    }
     addListeners() {
         const headerRow = this.getHeader();
         headerRow.querySelectorAll("th.sourtable-header").forEach(th => {
@@ -117,23 +109,16 @@ class Sourtable {
     sort(colIndex, order, key = "") {
         const array = [];
         let rows = this.getBody();
-        const row_len = rows.length;
-        const length = this.table.querySelectorAll("tr.sourtable-row").length;
-        //console.log(row_len, length);
-        if (row_len !== length) {
-            this.addIndicesToRows();
-            rows = this.getBody();
-        }
-        ///
         const isKeyAttr = typeof key === 'string' && key !== '' && key.startsWith('attr=');
         let keyAttr = "";
         if (isKeyAttr) {
             keyAttr = key.split('attr=')[1];
         }
         ///
-
+        let rowIndex = 0;
         for (const row of rows) {
-            const index = row.getAttribute("data-sourtable-row-index");
+            const index = `index_${rowIndex}`;
+            row.setAttribute("data-sourtable-row-index", index);
 
             const tdList = row.querySelectorAll("td");
             const relevantTd = tdList[colIndex];
@@ -154,6 +139,7 @@ class Sourtable {
                 const text = relevantTd.innerText;
                 array.push([index, parseFunction(text)]);
             }
+            rowIndex += 1;
         }
         if (order === "asc") {
             if (typeof array[0][1] === "string") {
@@ -197,12 +183,22 @@ class Sourtable {
     }
     initiate() {
         this.resetIndicatorArrows();
-        this.addIndicesToRows();
         this.addListeners();
         this.addCSS();
     }
     addCustomParseFunction(colIndex, parseFunction) {
         this.customParseFunctions[`col_${colIndex}`] = parseFunction;
+    }
+    disengage() {
+        const headerRow = this.getHeader();
+        headerRow.querySelectorAll("th.sourtable-header").forEach(th => {
+            th.removeEventListener("click", (event) => this.sortClickHandler(event));
+            th.classList.remove("sourtable-header");
+            const arrowsDiv = th.querySelector(".sourtable-arrow-container");
+            if (arrowsDiv) {
+                arrowsDiv.remove();
+            }
+        });
     }
 
 }

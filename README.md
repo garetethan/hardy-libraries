@@ -132,6 +132,23 @@ sourtable.addCustomParseFunction(1, function (text) {
 });
 ```
 
+#### `disengage()`
+
+Removes the "click" event listeners and sorting indicators from the table. You will have to manually set the sourtable instance to `null` if you wish to destroy the instance altogether.
+
+**Example:**
+
+```javascript
+window.addEventListener("load", () => {
+  let table = new Sourtable(document.getElementById("myTable")); // use let. If you use const you will get an error if you try to set it to null later on.
+  table.initiate();
+  document.getElementById("disengage").addEventListener("click", () => {
+      table.disengage();
+      table = null;
+    });
+});
+```
+
 ### Sorting Behavior
 
 Clicking a column header toggles between ascending (`asc`) and descending (`desc`) order. By default, sorting starts in ascending order. If sorting by an attribute, the script extracts its value instead of the cell text.

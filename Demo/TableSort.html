@@ -54,12 +54,17 @@
 
 
     <button onclick="addRandomRows()">Add Random Rows</button>
+    <button id="disengage">Disengage</button>
 </body>
 <script src="../libs/SourTable.js"></script>
 <script>
     window.addEventListener("load", () => {
-        const table = new Sourtable(document.getElementById("myTable"));
+        let table = new Sourtable(document.getElementById("myTable"));
         table.initiate();
+        document.getElementById("disengage").addEventListener("click", () => {
+            table.disengage();
+            table = null;
+        });
     });
     const sampleData = [
         { "name": "Alice", "age": 25, "salary": 50000, "country": "USA" },
