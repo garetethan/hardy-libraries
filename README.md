@@ -39,7 +39,7 @@ Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/
 **The purpose of this is to sort a simple table while not removing any listeners, which is why instead of innerHTML, I used appendChild and insertBefore methods as they retain the listeners.**
 
 
-Sourtable.js is a lightweight JavaScript library that adds dynamic sorting to HTML tables. It allows users to exclude specific columns from sorting, sort by custom attributes, and define custom parsing functions for column values.
+Sourtable.js is a lightweight JavaScript library that adds sorting to HTML tables. It allows users to exclude specific columns from sorting, sort by attributes value of a "td" cell element , and define custom parsing functions for text.
 
 ### Installation
 
