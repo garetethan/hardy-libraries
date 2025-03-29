@@ -91,7 +91,7 @@
         // [] means we have not excluded any column from sorting. if you wish to exclude any column, enter the column indexes in the array.
         // {"col_2": "data-salary"} means we want to sort the column at index 2 by the "data-salary" attribute of the "td" element instead of the text in the "td" cell.
         // If you do not wish to make any such modifications, simply use "let sourTable = new SourTable(table);"
-        let sourTable = new SourTable(table, [], {"col_2": "data-salary"});
+        let sourTable = new SourTable(table, [], {"col_2": "data-salary"}); // use let instead of const if you plan to disengage later on and setting the instance to null
 
         //custom parse function for percentage column
         sourTable.addCustomParseFunction(4, (text) => {
