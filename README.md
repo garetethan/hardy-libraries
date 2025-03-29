@@ -27,7 +27,7 @@
 
 ### Sample Use of Listeners
 
-Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/network%20listener.js) and then use any of the following snippets in your own code or Userscripts as needed. It takes away the need of monkeypatching in all your tools again and again to read the network calls.
+Install the [script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/network_listener/network_listener.user.js) and then use any of the following snippets in your own code or Userscripts as needed. It takes away the need of monkeypatching in all your tools again and again to read the network calls.
 
 ```javascript
 // Fetch Interceptor
@@ -58,7 +58,7 @@ window.addEventListener("hardy-socket", (t) => {
 
 SourTable.js ensures event listeners remain intact by using `appendChild` and `insertBefore` instead of modifying `innerHTML`.
 
-[Link to the JS File](https://github.com/sid-the-sloth1/libraries/blob/main/libs/SourTable.js)
+[Link to the JS File](https://github.com/sid-the-sloth1/libraries/blob/main/libs/sourTable/SourTable.js)
 
 ### Usage
 
@@ -206,11 +206,11 @@ This example excludes column 0 from sorting, sorts column 2 by `data-salary`, an
 
 ## Wait For Element To Exist
 
-[View Script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement.js)
+[View Script](https://github.com/sid-the-sloth1/libraries/blob/main/libs/waitForElement/waitForElement.js)
 
 ## Features
 - **`waitForElement`**: Waits for an element to appear in the DOM before resolving.
-- **`waitForPageLoad`**: Ensures the page is fully loaded (simulates `@run_at: document-start`) before proceeding.
+- **`waitForPageLoad`**: Ensures the page is fully loaded (simulates `@run_at: document-end`|| `DOMContentLoaded`) before proceeding.
 
 ## Usage
 
