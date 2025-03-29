@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="waitForElement.js"></script>
+    <style>
+  #parent,body{padding:2rem}body,input[type=text]{color:var(--text-primary)}:root{--bg-primary:#121212;--bg-secondary:#1e1e1e;--text-primary:#e0e0e0;--text-secondary:#a0a0a0;--accent-color:#4d8bf0;--border-color:#333;--success-color:#4caf50;--input-bg:#2d2d2d}body{font-family:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background-color:var(--bg-primary);margin:0;line-height:1.6}#parent{background-color:var(--bg-secondary);border-radius:8px;margin:0 auto;max-width:800px;box-shadow:0 4px 6px rgba(0,0,0,.3);border:1px solid var(--border-color)}#initial,a{border-radius:4px}#initial{padding:1rem;background-color:rgba(76,175,80,.1);border-left:4px solid var(--success-color);margin-bottom:1.5rem}a{color:var(--accent-color);text-decoration:none;transition:color .2s;display:inline-block;padding:.5rem 1rem;background-color:rgba(77,139,240,.1);margin:.5rem 0}a:hover{color:#6da1f5;text-decoration:underline}label{display:block;margin:1.5rem 0 .5rem;color:var(--text-secondary);font-size:.9rem;text-transform:uppercase;letter-spacing:.05em}input[type=text]{background-color:var(--input-bg);border:1px solid var(--border-color);padding:.75rem 1rem;border-radius:4px;width:100%;max-width:300px;font-size:1rem;transition:border-color .2s,box-shadow .2s}input[type=text]:focus{outline:0;border-color:var(--accent-color);box-shadow:0 0 0 2px rgba(77,139,240,.2)}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}#parent a,#parent input,#parent label{animation:.3s ease-out forwards fadeIn}
+    </style>
+</head>
+
+<body>
+    <div id="parent">
+        <div id="initial">Already Present. Keep an eye on console.</div>
+    </div>
+</body>
+<script>
+    let div = document.querySelector("#parent");
+    setTimeout(() => {
+        div.innerHTML += `<a href="https://www.ilovecats.com">Link</a>`;
+    }, 4000)
+    setTimeout(() => {
+        div.innerHTML += `<label>blah blah</label> `;
+    }, 8000)
+    setTimeout(() => {
+        div.innerHTML += `<input type="text" value="I love cats!">`;
+    }, 12000)
+
+    waitForElement('a').then((elem) => {
+        console.log('Element is ready: ', elem.href);
+    });
+    waitForElement('label').then((elem) => {
+        console.log('Element is ready: ', elem.textContent);
+    });
+    waitForElement('input').then((elem) => {
+        console.log('Element is ready: ', elem.value);
+    });
+</script>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #message,body{background-color:var(--bg-color);color:var(--on-bg-color)}#message,button{font-weight:700}#myTable th,button{text-transform:uppercase;letter-spacing:.5px}button,button:active{box-shadow:0 2px 4px rgba(0,0,0,.2)}#disengage,button{color:var(--on-primary-color)}:root{--bg-color:#121212;--surface-color:#1e1e1e;--primary-color:#bb86fc;--primary-variant:#3700b3;--secondary-color:#03dac6;--error-color:#cf6679;--on-bg-color:#e1e1e1;--on-surface-color:#ffffff;--on-primary-color:#000000;--on-secondary-color:#000000;--border-color:#333333;--header-bg:#2a2a2a;--header-text:#ffffff}body{font-family:'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;padding:20px;line-height:1.6}#myTable{width:100%;border-collapse:collapse;margin:20px 0;box-shadow:0 4px 6px rgba(0,0,0,.3);border-radius:8px;overflow:hidden}#myTable thead{background-color:var(--header-bg);color:var(--header-text)}#myTable th{padding:15px;text-align:left;font-weight:600;font-size:.85em;border-bottom:2px solid var(--primary-color)}#myTable tbody tr{background-color:var(--surface-color);border-bottom:1px solid var(--border-color);transition:background-color .2s}#myTable tbody tr:last-child{border-bottom:none}#myTable tbody tr:hover{background-color:#2a2a2a}#myTable td{padding:12px 15px;color:var(--on-surface-color)}#myTable td[data-salary]{font-family:'Roboto Mono',monospace;font-weight:500}#myTable td:contains("%"){color:var(--error-color);font-weight:500}button{background-color:var(--primary-color);border:none;padding:10px 20px;margin-right:10px;border-radius:4px;cursor:pointer;transition:.2s}button:hover{background-color:var(--primary-variant);transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,0,0,.3)}button:active{transform:translateY(0)}#disengage{background-color:var(--error-color)}#disengage:hover{background-color:#b00020}#message{text-align:center;padding:10px;margin:15px}
+    </style>
+</head>
+
+<body>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Salary</th>
+                <th>Country</th>
+                <th>Percentage</th>
+                <th>Date of Birth</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <button onclick="addRandomRows()">Add Random Rows</button>
+    <button id="disengage">Disengage</button>
+<div id="message"></div>
+</body>
+<script src="SourTable.js"></script>
+<script>
+    // code to populate table. For actual demonstration scroll down.
+    const diverseNames = ["Aarav Patel", "Olivia Kim", "Mohammed Al-Farsi", "Sophie Müller", "Kwame Nkrumah", "Yuki Tanaka", "Alejandro García", "Amina Diop", "Ivan Petrov", "Leila Abbasi", "Jamal Washington", "Priya Sharma", "Luca Bianchi", "Fatima Zahra", "Chen Wei", "Isabella Santos", "Tariq Jamal", "Anastasia Ivanova", "Kwesi Boateng", "Sofia Papadopoulos", "Diego Hernández", "Ngozi Eze", "Jakub Nowak", "Mei Lin", "Rafael Silva", "Aisha Mohammed", "Nikolai Petrov", "Emma Johansson", "Carlos Mendoza", "Yara Nassar", "Tomasz Kowalski", "Hana Suzuki", "Jean-Luc Dubois", "Zahra El-Masry", "Dmitri Sokolov", "Maria Gonzalez", "Abdul Rahman", "Elena Popescu", "Samuel Johnson", "Ji-hyun Park", "Giovanni Rossi", "Adeola Balogun", "Lars Andersen", "Natalia Kowalczyk", "Hassan Ibrahim"]; //len 45
+    const countries = ["Brazil", "Canada", "China", "France", "Germany", "India", "Indonesia", "Italy", "Japan", "Mexico", "Nigeria", "Pakistan", "Russia", "South Africa", "South Korea", "Spain", "Thailand", "Turkey", "Ukraine", "United Kingdom", "United States", "Vietnam", "Argentina", "Australia", "Egypt"]; //len 25
+
+    function getRandomIntInRange(min, max) {
+        const min_rounded = Math.ceil(min);
+        const max_rounded = Math.floor(max);
+        return Math.floor(Math.random() * (max_rounded - min_rounded + 1)) + min_rounded;
+    }
+    function addRandomRows() {
+        addRows(getRandomIntInRange(1, 4));
+    }
+
+    function addRows(numRowsToAdd) {
+        const table = document.getElementById("myTable").querySelector("tbody");
+        const today = new Date();
+        const fullYear = today.getFullYear();
+        const month = today.getMonth();
+        const day = today.getDate();
+        const rows = Array.from({ length: numRowsToAdd }, () => {
+            const name = diverseNames[getRandomIntInRange(0, diverseNames.length - 1)];
+            const country = countries[getRandomIntInRange(0, countries.length - 1)];
+            const salary = getRandomIntInRange(12, 79) * getRandomIntInRange(500, 1000);
+            const randomPercentage = ((getRandomIntInRange(1, 10) / getRandomIntInRange(10, 15))*100).toFixed(2);
+            const dateOfBirth = new Date(getRandomIntInRange(1980, 2009), getRandomIntInRange(0, 11), getRandomIntInRange(1, 28));
+            let age = fullYear - dateOfBirth.getFullYear();
+            const monthDiff = month - dateOfBirth.getMonth();
+            const dayDiff = day - dateOfBirth.getDate();
+
+            // Adjust age if the birthday hasn't occurred yet this year
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+            const dateArray = dateOfBirth.toDateString().split(" ");
+            dateArray.shift();
+            const dateString = dateArray.join("-");
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${name}</td>
+            <td>${age}</td>
+            <td data-salary="${salary}">$${salary.toLocaleString()}</td>
+            <td>${country}</td>
+            <td>-(${randomPercentage}%)</td>
+            <td>${dateString}</td>
+        `;
+            return row;
+        });
+        rows.forEach(row => table.appendChild(row));
+    }
+    addRows(5);
+
+</script>
+
+<script>
+
+    /// Actual demo code.//////////////////////////
+    window.addEventListener("load", () => {
+        const table = document.getElementById("myTable")
+        // [] means we have not excluded any column from sorting. if you wish to exclude any column, enter the column indexes in the array.
+        // {"col_2": "data-salary"} means we want to sort the column at index 2 by the "data-salary" attribute of the "td" element instead of the text in the "td" cell.
+        // If you do not wish to make any such modifications, simply use "let sourTable = new SourTable(table);"
+        let sourTable = new SourTable(table, [], {"col_2": "data-salary"});
+
+        //custom parse function for percentage column
+        sourTable.addCustomParseFunction(4, (text) => {
+            const parsedTxt = parseFloat(text.replace(/[%()\-]/g, "").replace(/\s/g, ''));
+            if (!isNaN(parsedTxt)) return parsedTxt;
+            console.log("Error parsing text. ", parsedTxt);
+            return text;
+        });
+
+        //custom parse function for date column
+        sourTable.addCustomParseFunction(5, (text) => {
+            const dateTxt = text.trim();
+            const timestamp = Date.parse(dateTxt);
+            return timestamp;
+        });
+        //initiate the table
+        sourTable.initiate();
+        // add listener to disengage button
+        document.getElementById("disengage").addEventListener("click", () => {
+            sourTable.disengage();
+            sourTable = null;
+            const newMsgDiv = document.createElement("div");
+            newMsgDiv.innerHTML = "SourTable Disengaged";
+            document.getElementById("message").appendChild(newMsgDiv);
+            setTimeout(() => {
+                newMsgDiv.remove();
+            }, 8000);
+        });
+    });
+
+
+    ////////////////////////////////////
+
+
+
+
+</script>
+
+</html>
