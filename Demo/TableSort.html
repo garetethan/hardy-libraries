@@ -3,118 +3,7 @@
 
 <head>
     <style>
-        :root {
-    --bg-color: #121212;
-    --surface-color: #1e1e1e;
-    --primary-color: #bb86fc;
-    --primary-variant: #3700b3;
-    --secondary-color: #03dac6;
-    --error-color: #cf6679;
-    --on-bg-color: #e1e1e1;
-    --on-surface-color: #ffffff;
-    --on-primary-color: #000000;
-    --on-secondary-color: #000000;
-    --border-color: #333333;
-    --header-bg: #2a2a2a; /* New header background color */
-    --header-text: #ffffff; /* New header text color */
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--on-bg-color);
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    padding: 20px;
-    line-height: 1.6;
-}
-
-#myTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-#myTable thead {
-    background-color: var(--header-bg); /* Updated header background */
-    color: var(--header-text); /* Updated header text color */
-}
-
-#myTable th {
-    padding: 15px;
-    text-align: left;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-size: 0.85em;
-    border-bottom: 2px solid var(--primary-color); /* Adds an accent line under headers */
-}
-
-/* Rest of your existing CSS remains the same */
-#myTable tbody tr {
-    background-color: var(--surface-color);
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.2s ease;
-}
-
-#myTable tbody tr:last-child {
-    border-bottom: none;
-}
-
-#myTable tbody tr:hover {
-    background-color: #2a2a2a;
-}
-
-#myTable td {
-    padding: 12px 15px;
-    color: var(--on-surface-color);
-}
-
-#myTable td[data-salary] {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500;
-}
-
-#myTable td:contains("%") {
-    color: var(--error-color);
-    font-weight: 500;
-}
-
-button {
-    background-color: var(--primary-color);
-    color: var(--on-primary-color);
-    border: none;
-    padding: 10px 20px;
-    margin-right: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-button:hover {
-    background-color: var(--primary-variant);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-#disengage {
-    background-color: var(--error-color);
-    color: var(--on-primary-color);
-}
-
-#disengage:hover {
-    background-color: #b00020;
-}
+       #myTable th,button{text-transform:uppercase;letter-spacing:.5px}button,button:active{box-shadow:0 2px 4px rgba(0,0,0,.2)}#disengage,button{color:var(--on-primary-color)}:root{--bg-color:#121212;--surface-color:#1e1e1e;--primary-color:#bb86fc;--primary-variant:#3700b3;--secondary-color:#03dac6;--error-color:#cf6679;--on-bg-color:#e1e1e1;--on-surface-color:#ffffff;--on-primary-color:#000000;--on-secondary-color:#000000;--border-color:#333333;--header-bg:#2a2a2a;--header-text:#ffffff}body{background-color:var(--bg-color);color:var(--on-bg-color);font-family:'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;padding:20px;line-height:1.6}#myTable{width:100%;border-collapse:collapse;margin:20px 0;box-shadow:0 4px 6px rgba(0,0,0,.3);border-radius:8px;overflow:hidden}#myTable thead{background-color:var(--header-bg);color:var(--header-text)}#myTable th{padding:15px;text-align:left;font-weight:600;font-size:.85em;border-bottom:2px solid var(--primary-color)}#myTable tbody tr{background-color:var(--surface-color);border-bottom:1px solid var(--border-color);transition:background-color .2s}#myTable tbody tr:last-child{border-bottom:none}#myTable tbody tr:hover{background-color:#2a2a2a}#myTable td{padding:12px 15px;color:var(--on-surface-color)}#myTable td[data-salary]{font-family:'Roboto Mono',monospace;font-weight:500}#myTable td:contains("%"){color:var(--error-color);font-weight:500}button{background-color:var(--primary-color);border:none;padding:10px 20px;margin-right:10px;border-radius:4px;cursor:pointer;font-weight:700;transition:.2s}button:hover{background-color:var(--primary-variant);transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,0,0,.3)}button:active{transform:translateY(0)}#disengage{background-color:var(--error-color)}#disengage:hover{background-color:#b00020}
     </style>
 </head>
 <body>
@@ -218,34 +107,23 @@ button:active {
     ];
 
     function addRandomRows() {
-            const table = document.getElementById("myTable").querySelector("tbody");
-
-            // Get a random number of rows to add (between 1 and 4)
-            const numRowsToAdd = Math.floor(Math.random() * 4) + 1;
-
-            for (let i = 0; i < numRowsToAdd; i++) {
-                // Get a random data entry
-                const randomData = sampleData[Math.floor(Math.random() * sampleData.length)];
-
-                // Generate a random percentage (between 10% and 90%)
-                const randomPercentage = (Math.random() * 80 + 10).toFixed(2);
-
-                // Create a new row
-                const row = document.createElement("tr");
-
-                // Create and populate cells
-                row.innerHTML = `
-                    <td>${randomData.name}</td>
-                    <td>${randomData.age}</td>
-                    <td data-salary="${randomData.salary}">$${randomData.salary.toLocaleString()}</td>
-                    <td>${randomData.country}</td>
-                    <td>-(${randomPercentage}%)</td>
-                `;
-
-                // Append row to table
-                table.appendChild(row);
-            }
-        }
+    const table = document.getElementById("myTable").querySelector("tbody");
+    const numRowsToAdd = Math.floor(Math.random() * 4) + 1;
+    const rows = Array.from({length: numRowsToAdd}, () => {
+        const randomData = sampleData[Math.floor(Math.random() * sampleData.length)];
+        const randomPercentage = (Math.random() * 80 + 10).toFixed(2);
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${randomData.name}</td>
+            <td>${randomData.age}</td>
+            <td data-salary="${randomData.salary}">$${randomData.salary.toLocaleString()}</td>
+            <td>${randomData.country}</td>
+            <td>-(${randomPercentage}%)</td>
+        `;
+        return row;
+    });
+    rows.forEach(row => table.appendChild(row));
+}
 
 </script>
 

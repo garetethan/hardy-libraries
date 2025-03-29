@@ -62,16 +62,12 @@ class SourTable {
         if (target.classList.contains("sourtable-header")) {
             const colIndex = Number(target.getAttribute("data-sourtable-col-index").split("_")[1]);
             const order = target.getAttribute("data-sourtable-order");
-            const newOrder = order === "asc" ? "desc" : "asc";
             let key = "";
             if (this.keysForAttributes[`col_${colIndex}`]) {
                 key = `attr=${this.keysForAttributes[`col_${colIndex}`]}`;
             }
-            this.sort(colIndex, newOrder, key);
-            this.resetIndicatorArrows();
-            const selector = order === "asc" ? "div.sourtable-arrow-up" : "div.sourtable-arrow-down";
-            target.querySelector(selector).classList.add("filled");
-            target.setAttribute("data-sourtable-order", newOrder);
+            this.sort(colIndex, order, key);
+            
         }
     }
     sort(colIndex, order, key = "") {
@@ -149,6 +145,13 @@ class SourTable {
             tbody.insertBefore(tbody.querySelector(`tr[data-sourtable-row-index="${index}"]`), last_element);
         }
 
+       
+        this.resetIndicatorArrows();
+        const selector = order === "asc" ? "div.sourtable-arrow-up" : "div.sourtable-arrow-down";
+        const target = this.table.querySelector(`th[data-sourtable-col-index="index_${colIndex}"]`);
+        target.querySelector(selector).classList.add("filled");
+        const newOrder = order === "asc" ? "desc" : "asc";
+        target.setAttribute("data-sourtable-order", newOrder);
     }
     addCSS() {
         if (!document.querySelector("style#sourtable-style")) {
