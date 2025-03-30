@@ -98,6 +98,12 @@
             background-color: #45a049;
         }
 
+        button:disabled {
+            background-color: #cccccc !important;
+            color: #666666 !important;
+            pointer-events: none !important;
+        }
+
         .controls {
             margin-bottom: 20px;
         }
@@ -111,8 +117,8 @@
     <section>
         <h2>Standard HTML Table</h2>
         <div class="controls">
-            <button onclick="initStandardTable()">Initiate Sorting</button>
-            <button onclick="disengageStandardTable()">Disengage Sorting</button>
+            <button id="initStandardTable" onclick="initStandardTable()">Initiate Sorting</button>
+            <button id="disengageStandardTable" onclick="disengageStandardTable()" disabled>Disengage Sorting</button>
         </div>
         <table id="standardTable">
             <thead>
@@ -156,8 +162,8 @@
     <section>
         <h2>Div-based Table</h2>
         <div class="controls">
-            <button onclick="initDivTable()">Initiate Sorting</button>
-            <button onclick="disengageDivTable()">Disengage Sorting</button>
+            <button id="initDivTable" onclick="initDivTable()">Initiate Sorting</button>
+            <button id="disengageDivTable" onclick="disengageDivTable()" disabled>Disengage Sorting</button>
         </div>
         <div id="divTable" class="div-table">
             <div class="div-row">
@@ -197,8 +203,8 @@
     <section>
         <h2>UL-based Table</h2>
         <div class="controls">
-            <button onclick="initUlTable()">Initiate Sorting</button>
-            <button onclick="disengageUlTable()">Disengage Sorting</button>
+            <button id="initUlTable" onclick="initUlTable()">Initiate Sorting</button>
+            <button id="disengageUlTable" onclick="disengageUlTable()" disabled>Disengage Sorting</button>
         </div>
         <ul id="ulTable" class="ul-table">
             <div class="ul_header">
@@ -240,8 +246,8 @@
     <section>
         <h2>Mixed Content Table</h2>
         <div class="controls">
-            <button onclick="initMixedTable()">Initiate Sorting</button>
-            <button onclick="disengageMixedTable()">Disengage Sorting</button>
+            <button id="initMixedTable" onclick="initMixedTable()">Initiate Sorting</button>
+            <button id="disengageMixedTable" onclick="disengageMixedTable()" disabled>Disengage Sorting</button>
         </div>
         <table id="mixedTable">
             <thead>
@@ -274,8 +280,8 @@
     <section>
         <h2>Empty Table</h2>
         <div class="controls">
-            <button onclick="initEmptyTable()">Initiate Sorting</button>
-            <button onclick="disengageEmptyTable()">Disengage Sorting</button>
+            <button id="initEmptyTable" onclick="initEmptyTable()">Initiate Sorting</button>
+            <button id="disengageEmptyTable" onclick="disengageEmptyTable()" disabled>Disengage Sorting</button>
         </div>
         <table id="emptyTable">
             <thead>
@@ -292,23 +298,29 @@
     <section>
         <h2>Performance Test (1000 Rows)</h2>
         <div class="controls">
-            <button onclick="initLargeTable()">Initiate</button>
+            <button id="initLargeTable" onclick="initLargeTable()">Initiate</button>
             <button onclick="sortLargeTable()">Sort Random Column</button>
             <span id="perfResult"></span>
         </div>
         <table id="largeTable">
-            <thead><tr><th>ID</th><th>Value</th><th>Timestamp</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Value</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
             <tbody></tbody>
         </table>
     </section>
-    
+
     <script>
         let largeTableInstance;
         function initLargeTable() {
             const table = document.getElementById('largeTable');
             const tbody = table.querySelector('tbody');
             tbody.innerHTML = '';
-            
+
             // Generate 1000 rows
             for (let i = 0; i < 1000; i++) {
                 const row = document.createElement('tr');
@@ -321,13 +333,14 @@
                 `;
                 tbody.appendChild(row);
             }
-            
+
             largeTableInstance = new SweetTable(table, [], {
                 'col_2': 'data-ts'
             });
             largeTableInstance.initiate();
+            document.getElementById('initLargeTable').disabled = true;
         }
-        
+
         function sortLargeTable() {
             if (!largeTableInstance) return;
             const start = performance.now();
@@ -337,7 +350,7 @@
             document.getElementById('perfResult').textContent = `Sorted column ${col} in ${time.toFixed(2)}ms`;
         }
     </script>
-    <script src="sweetTable.js"></script>
+    <script src='../sweetTable.js'></script>
     <script>
         // Standard HTML Table
         let standardTableInstance;
@@ -353,6 +366,8 @@
             });
 
             standardTableInstance.initiate();
+            document.getElementById('initStandardTable').disabled = true;
+            document.getElementById('disengageStandardTable').disabled = false;
         }
 
         function disengageStandardTable() {
@@ -360,6 +375,8 @@
                 standardTableInstance.disengage();
                 standardTableInstance = null;
             }
+            document.getElementById('initStandardTable').disabled = false;
+            document.getElementById('disengageStandardTable').disabled = true;
         }
 
         // Div-based Table
@@ -394,12 +411,16 @@
             });
 
             divTableInstance.initiate();
+            document.getElementById('initDivTable').disabled = true;
+            document.getElementById('disengageDivTable').disabled = false;
         }
 
         function disengageDivTable() {
-            if (divTableInstance) {
+            if (divTableInstance && divTableInstance.isEngaged()) {
                 divTableInstance.disengage();
                 divTableInstance = null;
+                document.getElementById('initDivTable').disabled = false;
+                document.getElementById('disengageDivTable').disabled = true;
             }
         }
 
@@ -437,12 +458,16 @@
             });
 
             ulTableInstance.initiate();
+            document.getElementById('initUlTable').disabled = true;
+            document.getElementById('disengageUlTable').disabled = false;
         }
 
         function disengageUlTable() {
-            if (ulTableInstance) {
+            if (ulTableInstance && ulTableInstance.isEngaged()) {
                 ulTableInstance.disengage();
                 ulTableInstance = null;
+                document.getElementById('initUlTable').disabled = false;
+                document.getElementById('disengageUlTable').disabled = true;
             }
         }
 
@@ -466,7 +491,18 @@
             });
 
             mixedTableInstance.initiate();
+            document.getElementById('initMixedTable').disabled = true;
+            document.getElementById('disengageMixedTable').disabled = false;
         }
+        function disengageMixedTable() {
+            mixedTableInstance.disengage();
+            mixedTableInstance = null;
+            document.getElementById('initMixedTable').disabled = false;
+            document.getElementById('disengageMixedTable').disabled = true;
+        }
+
+
+        ////
         let emptyTableInstance;
         function initEmptyTable() {
             const table = document.getElementById('emptyTable');
@@ -475,10 +511,21 @@
             try {
                 emptyTableInstance.initiate();
                 console.log("Empty table initiated successfully");
+                document.getElementById('initEmptyTable').disabled = true;
+                document.getElementById('disengageEmptyTable').disabled = false;
             } catch (e) {
                 console.error("SweetTable handled empty table:", e.message);
             }
         }
+        function disengageEmptyTable() {
+            if (emptyTableInstance && emptyTableInstance.isEngaged()) {
+                emptyTableInstance.disengage();
+                emptyTableInstance = null;
+                document.getElementById('initEmptyTable').disabled = false;
+                document.getElementById('disengageEmptyTable').disabled = true;
+            }
+        }
+
         // Add to standard table section
         document.querySelector('.controls').innerHTML +=
             '<button onclick="addDynamicRow()">Add Dynamic Row</button>';
@@ -497,7 +544,7 @@
             tbody.appendChild(newRow);
 
             // Test if sorting still works
-            
+
         }
     </script>
 </body>

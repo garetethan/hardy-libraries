@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,9 +14,13 @@
             padding: 20px;
             color: #333;
         }
-        h1, h2, h3 {
+
+        h1,
+        h2,
+        h3 {
             color: #2c3e50;
         }
+
         .demo-section {
             margin-bottom: 40px;
             padding: 20px;
@@ -23,29 +28,36 @@
             border-radius: 5px;
             background: #f9f9f9;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
         }
-        th, td {
+
+        th,
+        td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
         th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
+
         tr:hover {
             background-color: #f5f5f5;
         }
+
         .controls {
             margin: 15px 0;
             padding: 10px;
             background: #e8f4f8;
             border-radius: 5px;
         }
+
         button {
             padding: 8px 12px;
             margin-right: 10px;
@@ -55,18 +67,22 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         button:hover {
             background: #2980b9;
         }
+
         pre {
             background: #f4f4f4;
             padding: 15px;
             border-radius: 5px;
             overflow-x: auto;
         }
+
         .code-block {
             position: relative;
         }
+
         .copy-btn {
             position: absolute;
             top: 5px;
@@ -75,64 +91,86 @@
             font-size: 12px;
             background: #555;
         }
+
         .copy-btn:hover {
             background: #333;
         }
+
         .toc {
             background: #f8f9fa;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 30px;
         }
+
         .toc ul {
             list-style: none;
             padding-left: 0;
         }
+
         .toc li {
             margin: 8px 0;
         }
+
         .toc a {
             text-decoration: none;
             color: #2c3e50;
         }
+
         .toc a:hover {
             text-decoration: underline;
         }
-        
+
         /* Syntax highlighting */
         .token.comment {
             color: #6a9955;
         }
+
         .token.keyword {
             color: #569cd6;
         }
+
         .token.string {
             color: #ce9178;
         }
+
         .token.function {
             color: #dcdcaa;
         }
+
         .token.number {
             color: #b5cea8;
         }
+
         .token.operator {
             color: #d4d4d4;
         }
+
         .token.punctuation {
             color: #d4d4d4;
         }
+
         .token.class-name {
             color: #4ec9b0;
+        }
+
+        button:disabled {
+            background-color: #cccccc !important;
+            color: #666666 !important;
+            pointer-events: none !important;
         }
     </style>
     <!-- Prism.js for syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
+
 <body>
     <h1>SweetTable Library Demo</h1>
-    <p>A lightweight, flexible table sorting library that works with both standard HTML tables and custom table-like structures.</p>
+    <p>A lightweight, flexible table sorting library that works with both standard HTML tables and custom table-like
+        structures.</p>
 
     <div class="toc">
         <h2>Table of Contents</h2>
@@ -148,7 +186,7 @@
     <div id="basic-sorting" class="demo-section">
         <h2>Basic Table Sorting</h2>
         <p>This demonstrates the simplest usage with a standard HTML table.</p>
-        
+
         <table id="basic-table">
             <thead>
                 <tr>
@@ -187,32 +225,40 @@
         </table>
 
         <div class="controls">
-            <button onclick="initBasicTable()">Initiate Sorting</button>
-            <button onclick="disengageBasicTable()">Disengage Sorting</button>
+            <button id="initBasicTable" onclick="initBasicTable()">Initiate Sorting</button>
+            <button id="disengageBasicTable" onclick="disengageBasicTable()" disabled>Disengage Sorting</button>
         </div>
 
         <div class="code-block">
             <button class="copy-btn" onclick="copyCode('basic-code')">Copy</button>
             <pre id="basic-code"><code class="language-javascript">// Basic initialization
-const basicTable = document.getElementById('basic-table');
 let basicSweetTable;
 
 function initBasicTable() {
+    const basicTable = document.getElementById('basic-table');
     basicSweetTable = new SweetTable(basicTable);
     basicSweetTable.initiate();
+    // disable the button so that you do not accidentally create another instance of same table on same variable. Disengage the first instance before creating another instance.
+    document.getElementById('initBasicTable').disabled = true;
+    document.getElementById('disengageBasicTable').disabled = false;
 }
 
 function disengageBasicTable() {
-    basicSweetTable.disengage();
-    basicSweetTable = null;
-}</code></pre>
+    if (basicSweetTable && basicSweetTable.isEngaged()) {
+        basicSweetTable.disengage();
+        basicSweetTable = null;
+        document.getElementById('initBasicTable').disabled = false;
+        document.getElementById('disengageBasicTable').disabled = true;
+    }
+}
+</code></pre>
         </div>
     </div>
 
     <div id="excluded-columns" class="demo-section">
         <h2>Excluding Columns</h2>
         <p>You can exclude specific columns from being sortable by passing their indexes.</p>
-        
+
         <table id="excluded-table">
             <thead>
                 <tr>
@@ -249,32 +295,40 @@ function disengageBasicTable() {
         </table>
 
         <div class="controls">
-            <button onclick="initExcludedTable()">Initiate Sorting (Excluding Category and Stock)</button>
-            <button onclick="disengageExcludedTable()">Disengage Sorting</button>
+            <button id="initExcludedTable" onclick="initExcludedTable()">Initiate Sorting (Excluding Category and
+                Stock)</button>
+            <button id="disengageExcludedTable" onclick="disengageExcludedTable()" disabled>Disengage Sorting</button>
         </div>
 
         <div class="code-block">
             <button class="copy-btn" onclick="copyCode('excluded-code')">Copy</button>
             <pre id="excluded-code"><code class="language-javascript">// Initialize with excluded columns (indexes 1 and 3)
-const excludedTable = document.getElementById('excluded-table');
 let excludedSweetTable;
 
 function initExcludedTable() {
+    const excludedTable = document.getElementById('excluded-table');
     excludedSweetTable = new SweetTable(excludedTable, [1, 3]);
     excludedSweetTable.initiate();
+    document.getElementById('initExcludedTable').disabled = true;
+    document.getElementById('disengageExcludedTable').disabled = false;
 }
 
 function disengageExcludedTable() {
-    excludedSweetTable.disengage();
-    excludedSweetTable = null;
-}</code></pre>
+    if (excludedSweetTable && excludedSweetTable.isEngaged()) {
+        excludedSweetTable.disengage();
+        excludedSweetTable = null;
+        document.getElementById('initExcludedTable').disabled = false;
+        document.getElementById('disengageExcludedTable').disabled = true;
+    }
+}
+</code></pre>
         </div>
     </div>
 
     <div id="custom-parsing" class="demo-section">
         <h2>Custom Data Parsing</h2>
         <p>You can provide custom parsing functions for specific columns to handle special data formats.</p>
-        
+
         <table id="custom-parse-table">
             <thead>
                 <tr>
@@ -307,39 +361,47 @@ function disengageExcludedTable() {
         </table>
 
         <div class="controls">
-            <button onclick="initCustomParseTable()">Initiate with Custom Parsing</button>
-            <button onclick="disengageCustomParseTable()">Disengage</button>
+            <button id="initCustomParseTable" onclick="initCustomParseTable()">Initiate with Custom Parsing</button>
+            <button id="disengageCustomParseTable" onclick="disengageCustomParseTable()" disabled>Disengage</button>
+
         </div>
 
         <div class="code-block">
             <button class="copy-btn" onclick="copyCode('custom-parse-code')">Copy</button>
             <pre id="custom-parse-code"><code class="language-javascript">// Custom parsing for date column (index 3)
-const customParseTable = document.getElementById('custom-parse-table');
 let customParseSweetTable;
 
 function initCustomParseTable() {
+    const customParseTable = document.getElementById('custom-parse-table');
     customParseSweetTable = new SweetTable(customParseTable);
-    
-    // Set custom parse function for date column
+
     customParseSweetTable.setCustomParseFunction(3, (text) => {
         const parts = text.trim().split('/');
         return new Date(Number(parts[2]), Number(parts[0]) - 1, Number(parts[1])).getTime();
     });
-    
+
     customParseSweetTable.initiate();
+
+    document.getElementById('initCustomParseTable').disabled = true;
+    document.getElementById('disengageCustomParseTable').disabled = false;
 }
 
 function disengageCustomParseTable() {
-    customParseSweetTable.disengage();
-    customParseSweetTable = null;
-}</code></pre>
+    if (customParseSweetTable && customParseSweetTable.isEngaged()) {
+        customParseSweetTable.disengage();
+        customParseSweetTable = null;
+        document.getElementById('initCustomParseTable').disabled = false;
+        document.getElementById('disengageCustomParseTable').disabled = true;
+    }
+}
+</code></pre>
         </div>
     </div>
 
     <div id="custom-structure" class="demo-section">
         <h2>Custom Table Structure</h2>
         <p>SweetTable can work with non-standard table structures (like div-based tables) using custom functions.</p>
-        
+
         <div class="div-table" id="custom-table">
             <div class="div-header">
                 <div class="div-th">Product</div>
@@ -366,29 +428,30 @@ function disengageCustomParseTable() {
         </div>
 
         <div class="controls">
-            <button onclick="initCustomTable()">Initiate Custom Table</button>
-            <button onclick="disengageCustomTable()">Disengage</button>
+            <button id="initCustomTable" onclick="initCustomTable()">Initiate Custom Table</button>
+            <button id="disengageCustomTable" onclick="disengageCustomTable()" disabled>Disengage</button>
+
         </div>
 
         <div class="code-block">
             <button class="copy-btn" onclick="copyCode('custom-table-code')">Copy</button>
             <pre id="custom-table-code"><code class="language-javascript">// Custom table initialization
-const customTable = document.getElementById('custom-table');
 let customSweetTable;
 
 function initCustomTable() {
+    const customTable = document.getElementById('custom-table');
     customSweetTable = new SweetTable(customTable);
 
-    customSweetTable.setCustomGetHeadersFunction(() => {
-        return customTable.querySelectorAll('.div-th');
+    customSweetTable.setCustomGetHeadersFunction((table) => {
+        return table.querySelectorAll('.div-th');
     });
 
-    customSweetTable.setCustomGetRowsFunction(() => {
-        return customTable.querySelectorAll('.div-tr');
+    customSweetTable.setCustomGetRowsFunction((table) => {
+        return table.querySelectorAll('.div-tr');
     });
 
-    customSweetTable.setCustomGetTbodyFunction(() => {
-        return customTable.querySelector('.div-body');
+    customSweetTable.setCustomGetTbodyFunction((table) => {
+        return table.querySelector('.div-body');
     });
 
     customSweetTable.setCustomGetCellFromRowFunction((row) => {
@@ -396,19 +459,26 @@ function initCustomTable() {
     });
 
     customSweetTable.initiate();
+    document.getElementById('initCustomTable').disabled = true;
+    document.getElementById('disengageCustomTable').disabled = false;
 }
 
 function disengageCustomTable() {
-    customSweetTable.disengage();
-    customSweetTable = null;
-}</code></pre>
+    if (customSweetTable && customSweetTable.isEngaged()) {
+        customSweetTable.disengage();
+        customSweetTable = null;
+        document.getElementById('initCustomTable').disabled = false;
+        document.getElementById('disengageCustomTable').disabled = true;
+    }
+}
+</code></pre>
         </div>
     </div>
 
     <div id="attribute-sorting" class="demo-section">
         <h2>Sorting by Data Attributes</h2>
         <p>You can sort by data attributes instead of displayed text when needed.</p>
-        
+
         <table id="attribute-table">
             <thead>
                 <tr>
@@ -441,31 +511,41 @@ function disengageCustomTable() {
         </table>
 
         <div class="controls">
-            <button onclick="initAttributeTable()">Initiate with Attribute Sorting</button>
-            <button onclick="disengageAttributeTable()">Disengage</button>
+            <button id="initAttributeTable" onclick="initAttributeTable()">Initiate with Attribute Sorting</button>
+            <button id="disengageAttributeTable" onclick="disengageAttributeTable()" disabled>Disengage</button>
+           
         </div>
 
         <div class="code-block">
             <button class="copy-btn" onclick="copyCode('attribute-code')">Copy</button>
             <pre id="attribute-code"><code class="language-javascript">// Sorting by data attributes
-const attributeTable = document.getElementById('attribute-table');
 let attributeSweetTable;
 
 function initAttributeTable() {
+    const attributeTable = document.getElementById('attribute-table');
+
     attributeSweetTable = new SweetTable(attributeTable, [], {
-        2: 'sort-value' // Use data-sort-value attribute for column index 2
+        2: 'sort-value'
     });
+
     attributeSweetTable.initiate();
+    document.getElementById('initAttributeTable').disabled = true;
+    document.getElementById('disengageAttributeTable').disabled = false;
 }
 
 function disengageAttributeTable() {
-    attributeSweetTable.disengage();
-    attributeSweetTable = null;
-}</code></pre>
+    if (attributeSweetTable && attributeSweetTable.isEngaged()) {
+        attributeSweetTable.disengage();
+        attributeSweetTable = null;
+        document.getElementById('initAttributeTable').disabled = false;
+        document.getElementById('disengageAttributeTable').disabled = true;
+    }
+}
+</code></pre>
         </div>
     </div>
 
-    <script src="sweettable.js"></script>
+    <script src="../sweetTable.js"></script>
     <script>
         // Basic table
         let basicSweetTable;
@@ -473,10 +553,16 @@ function disengageAttributeTable() {
             const basicTable = document.getElementById('basic-table');
             basicSweetTable = new SweetTable(basicTable);
             basicSweetTable.initiate();
+            document.getElementById('initBasicTable').disabled = true;
+            document.getElementById('disengageBasicTable').disabled = false;
         }
         function disengageBasicTable() {
-            basicSweetTable.disengage();
-            basicSweetTable = null;
+            if (basicSweetTable && basicSweetTable.isEngaged()) {
+                basicSweetTable.disengage();
+                basicSweetTable = null;
+                document.getElementById('initBasicTable').disabled = false;
+                document.getElementById('disengageBasicTable').disabled = true;
+            }
         }
 
         // Excluded columns table
@@ -485,10 +571,16 @@ function disengageAttributeTable() {
             const excludedTable = document.getElementById('excluded-table');
             excludedSweetTable = new SweetTable(excludedTable, [1, 3]);
             excludedSweetTable.initiate();
+            document.getElementById('initExcludedTable').disabled = true;
+            document.getElementById('disengageExcludedTable').disabled = false;
         }
         function disengageExcludedTable() {
-            excludedSweetTable.disengage();
-            excludedSweetTable = null;
+            if (excludedSweetTable && excludedSweetTable.isEngaged()) {
+                excludedSweetTable.disengage();
+                excludedSweetTable = null;
+                document.getElementById('initExcludedTable').disabled = false;
+                document.getElementById('disengageExcludedTable').disabled = true;
+            }
         }
 
         // Custom parse table
@@ -501,10 +593,16 @@ function disengageAttributeTable() {
                 return new Date(Number(parts[2]), Number(parts[0]) - 1, Number(parts[1])).getTime();
             });
             customParseSweetTable.initiate();
+            document.getElementById('initCustomParseTable').disabled = true;
+            document.getElementById('disengageCustomParseTable').disabled = false;
         }
         function disengageCustomParseTable() {
-            customParseSweetTable.disengage();
-            customParseSweetTable = null;
+            if (customParseSweetTable && customParseSweetTable.isEngaged()) {
+                customParseSweetTable.disengage();
+                customParseSweetTable = null;
+                document.getElementById('initCustomParseTable').disabled = false;
+                document.getElementById('disengageCustomParseTable').disabled = true;
+            }
         }
 
         // Custom table structure
@@ -512,23 +610,29 @@ function disengageAttributeTable() {
         function initCustomTable() {
             const customTable = document.getElementById('custom-table');
             customSweetTable = new SweetTable(customTable);
-            customSweetTable.setCustomGetHeadersFunction(() => {
-                return customTable.querySelectorAll('.div-th');
+            customSweetTable.setCustomGetHeadersFunction((table) => {
+                return table.querySelectorAll('.div-th');
             });
-            customSweetTable.setCustomGetRowsFunction(() => {
-                return customTable.querySelectorAll('.div-tr');
+            customSweetTable.setCustomGetRowsFunction((table) => {
+                return table.querySelectorAll('.div-tr');
             });
-            customSweetTable.setCustomGetTbodyFunction(() => {
-                return customTable.querySelector('.div-body');
+            customSweetTable.setCustomGetTbodyFunction((table) => {
+                return table.querySelector('.div-body');
             });
             customSweetTable.setCustomGetCellFromRowFunction((row) => {
                 return row.querySelectorAll('.div-td');
             });
             customSweetTable.initiate();
+            document.getElementById('initCustomTable').disabled = true;
+            document.getElementById('disengageCustomTable').disabled = false;
         }
         function disengageCustomTable() {
-            customSweetTable.disengage();
-            customSweetTable = null;
+            if (customSweetTable && customSweetTable.isEngaged()) {
+                customSweetTable.disengage();
+                customSweetTable = null;
+                document.getElementById('initCustomTable').disabled = false;
+                document.getElementById('disengageCustomTable').disabled = true;
+            }
         }
 
         // Attribute sorting table
@@ -539,10 +643,17 @@ function disengageAttributeTable() {
                 2: 'sort-value'
             });
             attributeSweetTable.initiate();
+            document.getElementById('initAttributeTable').disabled = true;
+            document.getElementById('disengageAttributeTable').disabled = false;
         }
         function disengageAttributeTable() {
-            attributeSweetTable.disengage();
-            attributeSweetTable = null;
+            if (attributeSweetTable && attributeSweetTable.isEngaged()) {
+                attributeSweetTable.disengage();
+                attributeSweetTable = null;
+                document.getElementById('initAttributeTable').disabled = false;
+                document.getElementById('disengageAttributeTable').disabled = true;
+            }
+            
         }
 
         // Copy code function
@@ -554,7 +665,7 @@ function disengageAttributeTable() {
             window.getSelection().addRange(range);
             document.execCommand('copy');
             window.getSelection().removeAllRanges();
-            
+
             const btn = event.target;
             btn.textContent = 'Copied!';
             setTimeout(() => {
@@ -563,4 +674,5 @@ function disengageAttributeTable() {
         }
     </script>
 </body>
+
 </html>
