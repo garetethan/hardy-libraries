@@ -438,10 +438,11 @@
             ulTableInstance.setCustomGetRowsFunction(table => {
                 return table.querySelectorAll(`div.ul_body .ul-row`);
             });
-
+/*
             ulTableInstance.setCustomGetTbodyFunction(table => {
                 return table.querySelector(`div.ul_body`);
             });
+            */
 
             ulTableInstance.setCustomGetCellFromRowFunction(row => {
                 return row.querySelectorAll('.ul-cell');

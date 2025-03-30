@@ -134,7 +134,13 @@ class SweetTable {
             if (this.#tableType === "default") {
                 return this.#table.querySelector("tbody") || this.#table;
             } else {
-                throw new Error("SweetTable: customGetTbodyFunction is not set. You need to set this function to use SweetTable with custom tables.");
+    
+                const rows = this.#getBodyRows();
+                const firstRow = rows[0];
+                if (!firstRow) {
+                    throw new Error("SweetTable: Unable to find the rows in table. You must set a custom function to get the rows using setCustomGetRowsFunction().");
+                }
+                return firstRow.parentElement;
             }
         }
     }
@@ -340,6 +346,9 @@ class SweetTable {
         this.#addListeners();
         this.#addCSS();
         this.#table.classList.add("sweettable-initiated");
+    }
+    static getVersion() {
+        return "1.0.1";
     }
 
 
